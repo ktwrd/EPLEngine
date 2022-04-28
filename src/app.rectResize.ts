@@ -184,16 +184,24 @@ export default class RectangleResize
     public InitalizeEvents() : void
     {
         if (this.destroyed) return
+        let cursorMap: string[][] = [
+            ['top.left', 'nw-resize'],
+            ['top.right', 'ne-resize'],
+            ['bottom.left', 'sw-resize'],
+            ['bottom.right', 'se-resize']
+        ]
         for (let i = 0; i < this.WidgetAnchors.length; i++)
         {
             let widget = this.WidgetAnchors[i]
-            if (widget == null || widget.graphics == null)
-                continue
+            if (widget == null || widget.graphics == null) continue
+            let targetCursor: string = Object.fromEntries(cursorMap)[widget.position] == undefined ? 'default' : Object.fromEntries(cursorMap)[widget.position]
+            widget.graphics.cursor = targetCursor
             widget.graphics.removeAllListeners()
             let eventAlias = [
                 'mousedown',
                 'mouseup',
-                'mousemove'
+                'mousemove',
+                'mouseover'
             ]
             for (let x = 0; x < eventAlias.length; x++)
             {
