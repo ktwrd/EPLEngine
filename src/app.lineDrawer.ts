@@ -1,7 +1,6 @@
 import * as PIXI from 'pixi.js'
 
 import Engine from './engine'
-import { EngineMouseState } from './engineMouseOverlay'
 import DemoBase from './demobase'
 
 export default class LineDrawer extends DemoBase
@@ -12,6 +11,10 @@ export default class LineDrawer extends DemoBase
 
         this.Engine.Interaction.on('mouse:up', (d) => this.onmouseup(d))
         this.Engine.Interaction.on('mouse:down', (d) => this.onmousedown(d))
+        this.Engine.Interaction.on('mouse:move', (d) => this.onmousemove(d))
+
+        this.mouseLine = new PIXI.Graphics()
+        this.Container.addChild(this.mouseLine)
     }
 
     public positionBuffer: PIXI.Point[] = []
@@ -20,6 +23,9 @@ export default class LineDrawer extends DemoBase
     {
         super.destroy()
     }
+
+    private drawMouseLine: boolean = false
+    private mouseLine: PIXI.Graphics = null
 
     public onmousedown(event: PIXI.InteractionEvent) : void
     {
@@ -36,11 +42,13 @@ export default class LineDrawer extends DemoBase
         circle.x = position.x
         circle.y = position.y
         this.Container.addChild(circle)
+        this.drawMouseLine = true
     }
 
     public onmouseup(event: PIXI.InteractionEvent) : void
     {
         if (this.destroyed) return
+        this.mouseLine.clear()
         let position: PIXI.Point = JSON.parse(JSON.stringify(event.data.global))
         this.positionBuffer[1] = position
 
@@ -56,6 +64,43 @@ export default class LineDrawer extends DemoBase
 
         this.drawLineGraphics()
         this.drawBoundingGraphics()
+        this.drawMouseLine = false
+    }
+
+    private previousMousePosition: PIXI.Point = null
+
+    private mouseLineDrawing: boolean = false
+    private mouseMoveOffset: number = 0
+
+    public async onmousemove(event: PIXI.InteractionEvent) : Promise<void>
+    {
+        if (this.destroyed) return
+        if (this.mouseMoveOffset < 2)
+        {
+            this.mouseMoveOffset++
+            return
+        }
+        this.mouseMoveOffset = 0
+        if (this.drawMouseLine
+            && this.previousMousePosition != null
+            && event.data.global.x != this.previousMousePosition.x
+            && event.data.global.y != this.previousMousePosition.y
+            && !this.mouseLineDrawing)
+        {
+            this.mouseLineDrawing = true
+            this.mouseLine.clear()
+            this.mouseLine.lineStyle(2, 0xffffff, 1, 0.5, false)
+            this.mouseLine.moveTo(this.positionBuffer[0].x, this.positionBuffer[0].y)
+            this.mouseLine.lineTo(event.data.global.x, event.data.global.y)
+            this.Engine.Application.render()
+            this.mouseLineDrawing = false
+        }
+        else
+        {
+            if (!this.mouseLineDrawing)
+                this.previousMousePosition = null
+        }
+        this.previousMousePosition = new PIXI.Point(event.data.global.x, event.data.global.y)
     }
 
     public drawLineGraphics() : void
