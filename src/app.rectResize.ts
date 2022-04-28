@@ -13,7 +13,8 @@ export interface IWidgetAnchor
 {
     point?: PIXI.Point,
     position: string,
-    graphics: PIXI.Graphics
+    graphics?: PIXI.Graphics,
+    generatePoint() : PIXI.Point
 }
 
 export default class RectangleResize extends DemoBase
@@ -61,34 +62,18 @@ export default class RectangleResize extends DemoBase
 
         this.widgetEventEmitter = new EventEmitter()
 
-        let eventAlias = [
-            'mousedown',
-            'mouseup'
-        ]
-        for (let x = 0; x < eventAlias.length; x++)
-        {
-            this.widgetEventEmitter.on(eventAlias[x], console.log)
-        }
         this.widgetEventEmitter.on('mouseup', (p1, p2, p3) => this.widget_onmouseup(p1, p2, p3))
         this.widgetEventEmitter.on('mousedown', (p1, p2, p3) => this.widget_onmousedown(p1, p2, p3))
         this.Engine.Interaction.on('mouse:move', (event) => this.onmousemove(event))
+        this.Engine.Interaction.on('mouse:up', (event) => this.global_mouseup(event))
     }
 
     public enableMouseFollow: string[] = []
     public ContainerOutline: PIXI.Graphics = null
 
-    private widget_onmousedown(event: PIXI.InteractionEvent, i: number, widget: IWidgetAnchor) : void
+    private calculateBox(widget: IWidgetAnchor) : void
     {
-        if (this.destroyed) return
         this.enableMouseFollow = this.enableMouseFollow.filter(m => m != widget.position)
-        this.enableMouseFollow.push(widget.position)
-        console.log(this.anchorContainer.width, this.anchorContainer.height)
-    }
-    private widget_onmouseup(event: PIXI.InteractionEvent, i: number, widget: IWidgetAnchor) : void
-    {
-        if (this.destroyed) return
-        this.enableMouseFollow = this.enableMouseFollow.filter(m => m != widget.position)
-        console.log(this.anchorContainer.width, this.anchorContainer.height)
 
         let targetWidth = 0
         let targetHeight = 0
@@ -130,11 +115,23 @@ export default class RectangleResize extends DemoBase
                 }
             }
         }
-
         this.Target.width = targetWidth
         this.Target.height = targetHeight
         this.initalizeAnchors()
         this.redrawAnchors()
+    }
+
+    private widget_onmousedown(event: PIXI.InteractionEvent, i: number, widget: IWidgetAnchor) : void
+    {
+        if (this.destroyed) return
+        this.enableMouseFollow = this.enableMouseFollow.filter(m => m != widget.position)
+        this.enableMouseFollow.push(widget.position)
+    }
+    private widget_onmouseup(event: PIXI.InteractionEvent, i: number, widget: IWidgetAnchor) : void
+    {
+        if (this.destroyed) return
+        return
+        this.calculateBox(widget)
     }
 
     private target_onmousedown(event: PIXI.InteractionEvent) : void
@@ -156,30 +153,65 @@ export default class RectangleResize extends DemoBase
         this.redrawAnchors()
     }
 
+    private global_mouseup(event: PIXI.InteractionEvent) : void
+    {
+        if (this.destroyed) return
+        if (this.MoveTarget == true)
+        {
+            this.Target.x = event.data.global.x - this.MoveTargetOffset.x
+            this.Target.y = event.data.global.y - this.MoveTargetOffset.y
+            this.initalizeAnchors()
+            this.redrawAnchors()
+            this.MoveTarget = false
+        }
+
+        if (this.enableMouseFollow.length > 0)
+        {
+            for (let i = 0; i < this.enableMouseFollow.length; i++)
+            {
+                let filtered = this.WidgetAnchors.filter(a => a.position == this.enableMouseFollow[i])
+                if (filtered.length > 0)
+                {
+                    this.calculateBox(filtered[0])
+                }
+            }
+            this.initalizeAnchors()
+            this.redrawAnchors()
+        }
+    }
+
     private MoveTarget: boolean = false
     private MoveTargetOffset: PIXI.Point = null
 
     private onmousemove(event: PIXI.InteractionEvent) : void
     {
         if (this.destroyed) return
-        for (let i = 0; i < this.enableMouseFollow.length; i++)
+        if (this.enableMouseFollow.length > 0)
         {
-            let target = this.getAnchor(this.enableMouseFollow[i])
-            if (target == null)
-                continue
-            target.graphics.x = event.data.global.x
-            target.graphics.y = event.data.global.y
+            this.ContainerOutline.x = this.Target.x
+            this.ContainerOutline.y = this.Target.y
+            this.ContainerOutline.width = this.Target.width
+            this.ContainerOutline.height = this.Target.height
+            for (let i = 0; i < this.enableMouseFollow.length; i++)
+            {
+                let target = this.getAnchor(this.enableMouseFollow[i])
+                if (target == null)
+                    continue
+                target.graphics.x = event.data.global.x
+                target.graphics.y = event.data.global.y
+            }
         }
 
         if (this.MoveTarget)
         {
             this.Target.x = event.data.global.x - this.MoveTargetOffset.x
             this.Target.y = event.data.global.y - this.MoveTargetOffset.y
+            this.updateAnchorPosition()
+        }
+        if (this.Target != undefined && this.ContainerOutline != undefined)
+        {
             this.ContainerOutline.x = this.Target.x
             this.ContainerOutline.y = this.Target.y
-        }
-        if (this.enableMouseFollow.length > 0)
-        {
             this.ContainerOutline.width = this.Target.width
             this.ContainerOutline.height = this.Target.height
         }
@@ -274,28 +306,38 @@ export default class RectangleResize extends DemoBase
     private initalizeAnchors() : void
     {
         if (this.destroyed) return
-        this.WidgetAnchors = [
+        let anchors: IWidgetAnchor[] = [
             {
                 position: 'top.left',
-                point: new PIXI.Point(this.Target.x, this.Target.y),
-                graphics: null
+                generatePoint: (): PIXI.Point =>
+                {
+                    return new PIXI.Point(this.Target.x, this.Target.y)
+                }
             },
             {
                 position: 'top.right',
-                point: new PIXI.Point(this.Target.x + this.Target.width, this.Target.y),
-                graphics: null
+                generatePoint: (): PIXI.Point =>
+                {
+                    return new PIXI.Point(this.Target.x + this.Target.width, this.Target.y)
+                }
             },
             {
                 position: 'bottom.left',
-                point: new PIXI.Point(this.Target.x, this.Target.y + this.Target.height),
-                graphics: null
+                generatePoint: (): PIXI.Point =>
+                {
+                    return new PIXI.Point(this.Target.x, this.Target.y + this.Target.height)
+                }
             },
             {
                 position: 'bottom.right',
-                point: new PIXI.Point(this.Target.x + this.Target.width, this.Target.y + this.Target.height),
-                graphics: null
+                generatePoint: (): PIXI.Point =>
+                {
+                    return new PIXI.Point(this.Target.x + this.Target.width, this.Target.y + this.Target.height)
+                }
             }
         ]
+        this.WidgetAnchors = anchors
+        this.updateAnchorPosition()
     }
     private redrawAnchors() : void
     {
@@ -334,6 +376,21 @@ export default class RectangleResize extends DemoBase
         this.ContainerOutline.y = this.Target.y
 
         this.InitalizeEvents()
+    }
+    private updateAnchorPosition() : void
+    {
+        if (this.Target == undefined || this.Target == null) return
+        for (let i = 0; i < this.WidgetAnchors.length; i++)
+        {
+            let anchor: IWidgetAnchor = this.WidgetAnchors[i]
+            anchor.point = anchor.generatePoint()
+            if (anchor.graphics != null)
+            {
+                anchor.graphics.x = anchor.point.x - (this.WidgetWidth / 2)
+                anchor.graphics.y = anchor.point.y - (this.WidgetWidth / 2)
+            }
+            this.WidgetAnchors[i] = anchor
+        }
     }
 
     public destroy() : void
