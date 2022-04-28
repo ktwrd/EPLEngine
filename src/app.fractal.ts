@@ -69,21 +69,49 @@ export default class FractalDemo extends DemoBase
     public constructor(engine: Engine, parent: PIXI.Container)
     {
         super(engine, parent)
+        this.run()
     }
 
     public miraGenerator: Generator<IMiraYield>
+    private miraGeneratorConfig: IMiraParams
 
     public Graphics: PIXI.Graphics = new PIXI.Graphics()
 
     public run() : void
     {
-        this.miraGenerator = mira(IMiraParamsDefault)
+        this.miraGeneratorConfig = {
+            a: -0.41,
+            b: 1,
+            x: 10,
+            y: 10,
+            maxIteration: 100000,
+            scale: 25
+        }
+        this.miraGenerator = mira(this.miraGeneratorConfig)
+        this.Graphics.clear()
+        this.Container.removeChild(this.Graphics)
+        this.Container.addChild(this.Graphics)
+        this.Graphics.beginFill(0xffffff, 1)
+        this.Graphics.x = this.miraGeneratorConfig.scale ** 1.9
+        this.Graphics.y = this.miraGeneratorConfig.scale ** 1.9
+        while (this.iterationIndex < this.miraGeneratorConfig.maxIteration)
+        {
+            this.draw()
+            this.iterationIndex++
+        }
+        this.draw()
+        this.Graphics.endFill()
     }
+
+    public iterationIndex: number = 0
 
     public draw() : void
     {
-        let x = 0
-        let y = 0
+        let n = this.miraGenerator.next()
+        let v: IMiraYield = n.value
+        if (v == undefined) return
+        let x = v.point.x
+        let y = v.point.y
         this.Graphics.drawCircle(x, y, 1)
     }
 }
