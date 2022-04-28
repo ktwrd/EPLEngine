@@ -5,6 +5,7 @@ import Engine from './engine'
 
 import LineDrawer from './app.lineDrawer'
 import RectangleResize from './app.rectResize'
+import FractalDemo from './app.fractal'
 
 export interface KeyValuePair<T, A>
 {
@@ -12,7 +13,7 @@ export interface KeyValuePair<T, A>
     Value: A
 }
 
-export type ValidDemo = LineDrawer | RectangleResize
+export type ValidDemo = LineDrawer | RectangleResize | FractalDemo
 
 export const DemoEntries: KeyValuePair<string, Function>[] =
 [
@@ -28,6 +29,13 @@ export const DemoEntries: KeyValuePair<string, Function>[] =
         Value: (engineInstance: Engine, parentContainer: PIXI.Container): ValidDemo =>
         {
             return new LineDrawer(engineInstance, parentContainer)
+        }
+    },
+    {
+        Key: 'Fractal Test',
+        Value: (engineInstance: Engine, parentContainer: PIXI.Container): ValidDemo =>
+        {
+            return new FractalDemo(engineInstance, parentContainer)
         }
     }
 ]
