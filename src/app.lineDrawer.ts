@@ -90,6 +90,7 @@ export default class LineDrawer extends DemoBase
             this.mouseLineDrawing = true
             this.mouseLine.clear()
             this.mouseLine.lineStyle(2, 0xffffff, 1, 0.5, false)
+            this.mouseLine.drawRect(this.positionBuffer[0].x, this.positionBuffer[0].y, event.data.global.x - this.positionBuffer[0].x, event.data.global.y - this.positionBuffer[0].y)
             this.mouseLine.moveTo(this.positionBuffer[0].x, this.positionBuffer[0].y)
             this.mouseLine.lineTo(event.data.global.x, event.data.global.y)
             this.Engine.Application.render()
