@@ -4,7 +4,7 @@ const webpack = require('webpack')
 module.exports = {
     mode: 'development',
     entry: './src/index.ts',
-    devtool: "inline-source-map",
+    devtool: 'inline-source-map',
     output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist')
@@ -24,7 +24,37 @@ module.exports = {
     },
     module: {
         rules: [
-            { test: /\.tsx?$/, loader: "ts-loader" }
+            {
+                test: /\.tsx?$/,
+                loader: 'ts-loader'
+            },
+            {
+                test: /\.s[ac]ss$/i,
+                use: [
+                    { loader: 'style-loader' },
+                    { loader: 'css-loader' },
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            plugins: () =>
+                            {
+                                return [
+                                    require('precss'),
+                                    require('autoprefixer')
+                                ]
+                            }
+                        }
+                    },
+                    { loader: 'sass-loader'}
+                ]
+            },
+            {
+                test: /\.css$/,
+                use: [
+                    { loader: 'style-loader' },
+                    { loader: 'css-loader' }
+                ]
+            }
         ]
     }
 };
