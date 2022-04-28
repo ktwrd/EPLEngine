@@ -16,6 +16,8 @@
     "devDependencies": {
         "@types/pixi.js": "^5.0.0",
         "css-loader": "^6.7.1",
+        "postcss-loader": "^6.2.1",
+        "raw-loader": "^4.0.2",
         "sass": "^1.51.0",
         "sass-loader": "^12.6.0",
         "style-loader": "^3.3.1",
