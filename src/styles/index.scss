@@ -1,0 +1,8 @@
+@import "./_custom";
+@import "./debug.scss";
+@import "./panel-layout";
+
+.engine.rounded canvas
+{
+    border-radius: $border-radius;
+}
