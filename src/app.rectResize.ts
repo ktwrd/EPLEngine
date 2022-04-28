@@ -1,7 +1,9 @@
 import * as PIXI from 'pixi.js'
+import EventEmitter from 'events'
+
 import Engine from './engine'
 import { EngineMouseState } from './engineMouseOverlay'
-import EventEmitter from 'events'
+import DemoBase from './demobase'
 
 import * as _imgData from './image'
 
@@ -14,14 +16,11 @@ export interface IWidgetAnchor
     graphics: PIXI.Graphics
 }
 
-export default class RectangleResize
+export default class RectangleResize extends DemoBase
 {
-    public constructor(engine: Engine)
+    public constructor(engine: Engine, parent: PIXI.Container)
     {
-        this.Engine = engine
-        this.Container = new PIXI.Container()
-
-        this.Engine.Container.addChild(this.Container)
+        super(engine, parent)
         this.proc()
     }
 
@@ -319,16 +318,10 @@ export default class RectangleResize
 
     public destroy() : void
     {
-        this.destroyed = true
-        this.Engine.Container.removeChild(this.Container)
+        super.destroy()
     }
-    private destroyed: boolean = false
 
     public WidgetWidth: number = 12
-
-    public Engine: Engine = null
-
-    public Container: PIXI.Container = null
 
     public square: PIXI.Graphics = null
 

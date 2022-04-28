@@ -1,31 +1,24 @@
 import * as PIXI from 'pixi.js'
+
 import Engine from './engine'
 import { EngineMouseState } from './engineMouseOverlay'
+import DemoBase from './demobase'
 
-export default class LineDrawer
+export default class LineDrawer extends DemoBase
 {
-    public constructor(engine: Engine)
+    public constructor(engine: Engine, parent: PIXI.Container)
     {
-        this.Engine = engine
-        this.Container = new PIXI.Container()
-
-        this.Engine.Container.addChild(this.Container)
+        super(engine, parent)
 
         this.Engine.Interaction.on('mouse:up', (d) => this.onmouseup(d))
         this.Engine.Interaction.on('mouse:down', (d) => this.onmousedown(d))
     }
-    public Engine: Engine = null
-
-    public Container: PIXI.Container = null
 
     public positionBuffer: PIXI.Point[] = []
 
-    private destroyed: boolean = false
-
     public destroy()
     {
-        this.Engine.Container.removeChild(this.Container)
-        this.destroyed = true
+        super.destroy()
     }
 
     public onmousedown(event: PIXI.InteractionEvent) : void
