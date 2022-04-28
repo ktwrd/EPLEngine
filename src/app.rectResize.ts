@@ -46,6 +46,13 @@ export default class RectangleResize extends DemoBase
 
         this.Container.addChild(this.Target)
         this.anchorContainer = new PIXI.Container()
+        this.ContainerOutline = new PIXI.Graphics()
+        this.ContainerOutline.lineStyle(1, 0xffffff, 1, 0.5, true)
+        this.ContainerOutline.drawRect(0, 0, this.Target.width, this.Target.height)
+        this.ContainerOutline.x = this.Target.x
+        this.ContainerOutline.y = this.Target.y
+        this.Container.addChild(this.ContainerOutline)
+
         this.Container.addChild(this.anchorContainer)
 
         this.initalizeAnchors()
@@ -68,6 +75,7 @@ export default class RectangleResize extends DemoBase
     }
 
     public enableMouseFollow: string[] = []
+    public ContainerOutline: PIXI.Graphics = null
 
     private widget_onmousedown(event: PIXI.InteractionEvent, i: number, widget: IWidgetAnchor) : void
     {
@@ -167,6 +175,13 @@ export default class RectangleResize extends DemoBase
         {
             this.Target.x = event.data.global.x - this.MoveTargetOffset.x
             this.Target.y = event.data.global.y - this.MoveTargetOffset.y
+            this.ContainerOutline.x = this.Target.x
+            this.ContainerOutline.y = this.Target.y
+        }
+        if (this.enableMouseFollow.length > 0)
+        {
+            this.ContainerOutline.width = this.Target.width
+            this.ContainerOutline.height = this.Target.height
         }
     }
 
@@ -312,6 +327,11 @@ export default class RectangleResize extends DemoBase
                 this.anchorContainer.addChild(g)
             }
         }
+        this.ContainerOutline.clear()
+        this.ContainerOutline.lineStyle(1, 0xffffff, 1, 0.5, true)
+        this.ContainerOutline.drawRect(0, 0, this.Container.width - this.WidgetWidth, this.Container.height - this.WidgetWidth)
+        this.ContainerOutline.x = this.Target.x
+        this.ContainerOutline.y = this.Target.y
 
         this.InitalizeEvents()
     }
