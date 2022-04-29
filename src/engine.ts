@@ -96,5 +96,6 @@ export default class Engine extends EventEmitter {
             enabled: false,
             addon
         }
+        this.emit('registerAddon')
     }
 }
