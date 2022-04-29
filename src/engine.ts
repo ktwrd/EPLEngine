@@ -4,6 +4,15 @@ import { EventEmitter } from 'events'
 import EngineRender from './engineRender'
 import EngineInteraction from './engineInteraction'
 import EngineMouseOverlay from './engineMouseOverlay'
+import ExampleAddon from './engine.addon.example'
+
+export interface IEngineAddon
+{
+    enabled: boolean,
+
+    enable() : void,
+    disable() : void
+}
 
 export default class Engine extends EventEmitter {
     public constructor(engineElement: HTMLElement)
@@ -41,8 +50,11 @@ export default class Engine extends EventEmitter {
 
         this.Render = new EngineRender(this)
         this.Interaction = new EngineInteraction(this)
-        this.MouseOverlay = new EngineMouseOverlay(this)
+        this.registerAddon('cursorPositionOverlay', new EngineMouseOverlay(this))
+        this.registerAddon('example', new ExampleAddon(this))
     }
+
+    public registeredAddons: {[key: string]: { enabled: boolean, addon: IEngineAddon }  } = {}
 
     public destroy() : void
     {
@@ -63,5 +75,26 @@ export default class Engine extends EventEmitter {
         this.Application.stage.height = height
         this.Application.view.style.width = `${width}px`
         this.Application.view.style.height = `${height}px`
+    }
+
+    public setAddon(label: string, enable: boolean) : void
+    {
+        console.log(`${label} -> ${enable}`)
+        if (this.registeredAddons[label] == undefined)
+            return
+        if (this.registeredAddons[label].enabled == enable)
+            return
+        this.registeredAddons[label].enabled = enable
+        if (enable)
+            this.registeredAddons[label].addon.enable()
+        else
+            this.registeredAddons[label].addon.disable()
+    }
+    public registerAddon(label: string, addon: IEngineAddon) : void
+    {
+        this.registeredAddons[label] = {
+            enabled: false,
+            addon
+        }
     }
 }
