@@ -23,7 +23,7 @@ export default class DemoResizeableObject extends DemoBase
 
     public async fetchTestImage(index: number, scale: PIXI.Point = new PIXI.Point(1, 1)) : Promise<PIXI.Sprite>
     {
-        let teture = await PIXI.Texture.fromURL(ImageData[0])
+        let teture = await PIXI.Texture.fromURL(ImageData[index])
         let sprite = new PIXI.Sprite(teture)
         sprite.scale.set(scale.x, scale.y)
         sprite.x = 0
