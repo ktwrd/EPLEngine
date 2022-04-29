@@ -114,8 +114,12 @@ export default class ResizeableObject extends DemoBase implements IResizeableObj
     {
         for (let x = 0; x < this.Widgets.length; x++)
         {
-            for (let y = 0; y < this.Widgets[y].length; y++)
+            if (this.Widgets[x] == undefined)
+                continue
+            for (let y = 0; y < this.Widgets[x].length; y++)
             {
+                if (this.Widgets[x][y] == undefined)
+                    continue
                 this.Widgets[x][y].update(position, size)
             }
         }
