@@ -14,3 +14,38 @@ window.addEventListener('resize', () => {
     engineInstance.setSize(element.clientWidth, element.clientHeight)
 })
 
+document.querySelector('input#param_cursorposition').addEventListener('click', () => {
+    let element: HTMLInputElement = document.querySelector('input#param_cursorposition')
+    let isChecked: boolean = element.checked
+    engineInstance.setAddon('cursorPositionOverlay', isChecked)
+})
+
+function generateEngineAddonList() : void
+{
+    let htmlArray = []
+    let entries = Object.entries(engineInstance.registeredAddons)
+    for (let i = 0; i < entries.length; i++)
+    {
+        let id = `toggle_addon_${entries[i][0]}`
+        htmlArray.push(`
+        <div class="row">
+            <div class="form-check">
+                <input type="checkbox" id="${id}" class="form-check-input" action="toggle_addon" label="${entries[i][0]}">
+                <label for="${id}"class="form-check-label" ${entries[i][1].enabled ? 'checked' : ''}>${entries[i][0]}</label>
+            </div>
+        </div>
+        `)
+    }
+    document.querySelector('#engine_addons_toggle_list').innerHTML = htmlArray.join('\n')
+
+    let allQueries = document.querySelectorAll('[action=toggle_addon]')
+    for (let i = 0; i < allQueries.length; i++)
+    {
+        allQueries[i].addEventListener('click', (event) => {
+            let target: any = event.target
+            engineInstance.setAddon(target.attributes.label.value, target.checked)
+        })
+    }
+}
+generateEngineAddonList()
+

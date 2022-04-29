@@ -6,29 +6,43 @@
     <body>
         <div class="engine shadow rounded"></div>
         <div class="engine-sidebar shadow bg-body rounded p-3">
-            <div class="card">
-                <div class="card-header">
-                    EPLngine Demos
-                </div>
-                <div class="card-body">
-                    <div class="col">
-                        <div class="row">
-                            <div class="mb-3">
-                                <label for="demoselect_input" class="form-label">Select Demo</label>
-                                <select class="form-control form-control-sm form-select" id="demoselect_input">
-                                    <option value="null" selected>None</option>
-                                </select>
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        EPLngine Demos
+                    </div>
+                    <div class="card-body">
+                        <div class="col">
+                            <div class="row">
+                                <div class="mb-3">
+                                    <label for="demoselect_input" class="form-label">Select Demo</label>
+                                    <select class="form-control form-control-sm form-select" id="demoselect_input">
+                                        <option value="null" selected>None</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <button type="button" class="btn btn-outline-secondary" action="start">Start</button>
+                            <div class="row">
+                                <button type="button" class="btn btn-outline-secondary" action="start">Start</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col">
-                <div class="row">
-                    
+                <div class="card">
+                    <div class="card-header">
+                        Engine Addons
+                    </div>
+                    <div class="card-body">
+                        <div class="col" id="engine_addons_toggle_list">
+                            <div class="row">
+                                <div class="form-check">
+                                    <input type="checkbox" id="param_cursorposition" class="form-check-input">
+                                    <label for="param_cursorposition"class="form-check-label">Show Cursor Position</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
