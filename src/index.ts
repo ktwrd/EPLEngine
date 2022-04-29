@@ -1,4 +1,5 @@
 import './styles/index.scss'
+
 import Engine from './engine'
 import DemoLoader from './demoloader'
 
@@ -37,6 +38,8 @@ function generateEngineAddonList() : void
     {
         allQueries[i].addEventListener('click', (event) => {
             let target: any = event.target
+            if (target.attributes.label == undefined || typeof target.attributes.label != 'object') return
+            if (target.checked == undefined || typeof target.checked != 'boolean') return
             engineInstance.setAddon(target.attributes.label.value, target.checked)
         })
     }
