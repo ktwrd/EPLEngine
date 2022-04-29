@@ -42,4 +42,5 @@ function generateEngineAddonList() : void
     }
 }
 generateEngineAddonList()
+engineInstance.on('registerAddon', () => generateEngineAddonList())
 
