@@ -14,12 +14,6 @@ window.addEventListener('resize', () => {
     engineInstance.setSize(element.clientWidth, element.clientHeight)
 })
 
-document.querySelector('input#param_cursorposition').addEventListener('click', () => {
-    let element: HTMLInputElement = document.querySelector('input#param_cursorposition')
-    let isChecked: boolean = element.checked
-    engineInstance.setAddon('cursorPositionOverlay', isChecked)
-})
-
 function generateEngineAddonList() : void
 {
     let htmlArray = []
