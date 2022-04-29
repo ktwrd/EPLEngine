@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js'
 
-import Engine from './engine'
+import Engine, { IEngineAddon } from './engine'
 
 export enum EngineMouseState
 {
@@ -8,7 +8,7 @@ export enum EngineMouseState
     DOWN
 }
 
-export default class EngineMouseOverlay
+export default class EngineMouseOverlay implements IEngineAddon
 {
     public constructor(engine: Engine)
     {
@@ -21,12 +21,27 @@ export default class EngineMouseOverlay
             align: 'left'
         })
         this.Container.addChild(this.AssetText)
-        this.Engine.Application.stage.addChild(this.Container)
 
         this.Engine.Interaction.on('mouse:move', (event) => this.onmousemove(event))
         this.Engine.Interaction.on('mouse:down', (event) => this.onmousedown(event))
         this.Engine.Interaction.on('mouse:up', (event) => this.onmouseup(event))
     }
+
+    public enabled: boolean = false
+
+    public enable() : void
+    {
+        if (this.enabled == true) return
+        this.enabled = true
+        this.Engine.Application.stage.addChild(this.Container)
+    }
+    public disable() : void
+    {
+        if (this.enabled == false) return
+        this.enabled = false
+        this.Engine.Application.stage.removeChild(this.Container)
+    }
+
     public Engine: Engine = null
 
     public Container: PIXI.Container = null
@@ -89,6 +104,7 @@ export default class EngineMouseOverlay
 
     public onmousemove(event: PIXI.InteractionEvent) : void
     {
+        if (!this.enabled) return
         this.Container.x = event.data.global.x
         this.Container.y = event.data.global.y
         this.UpdateText()
