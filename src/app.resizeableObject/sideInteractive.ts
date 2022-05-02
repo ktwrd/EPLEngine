@@ -3,6 +3,8 @@ import * as PIXI from 'pixi.js'
 import IBaseDrawable from './baseDrawable'
 import ResizeableObject from './index'
 
+import * as InteractiveBounds from './interactiveBounds'
+
 export enum ESideLocation
 {
     NONE,
@@ -91,12 +93,12 @@ export default class SideInteractive implements IBaseDrawable, ISideInteractive
         this.Graphics.clear()
 
         this.Graphics.beginFill(
-            SideInteractive.LocationColorMap[this.Location],    // color
+            InteractiveBounds.ColorMap[this.Location],    // color
             1)                                                  // alpha
 
         this.Graphics.lineStyle(
             1,                                                  // width
-            SideInteractive.LocationColorMap[this.Location],    // color
+            InteractiveBounds.ColorMap[this.Location],    // color
             1)                                                  // alpha
 
         this.Graphics.moveTo(positions[0][0], positions[0][1])
@@ -107,7 +109,7 @@ export default class SideInteractive implements IBaseDrawable, ISideInteractive
         this.Graphics.endFill()
 
         this.Graphics.interactive = true
-        this.Graphics.cursor = SideInteractive.LocationCursorMap[this.Location]
+        this.Graphics.cursor = InteractiveBounds.CursorMap[this.Location]
     }
 
     public onmousedown(event: PIXI.InteractionEvent) : void
