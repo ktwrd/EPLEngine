@@ -1,5 +1,5 @@
 {
-    "name": "mzengine",
+    "name": "eplengine",
     "version": "1.0.0",
     "scripts": {
         "ts:watch": "tsc --project tsconfig.json --watch",
