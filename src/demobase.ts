@@ -3,7 +3,16 @@ import EventEmitter from 'events'
 
 import Engine from './engine'
 
-export default class DemoBase extends EventEmitter
+export interface IDemoBase
+{
+    Container: PIXI.Container,
+    Engine: Engine,
+    destroyed: boolean,
+
+    destroy() : void
+}
+
+export default class DemoBase extends EventEmitter implements IDemoBase
 {
     public constructor(engine: Engine, parentContainer: PIXI.Container)
     {
