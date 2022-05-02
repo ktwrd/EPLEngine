@@ -7,6 +7,8 @@ import LineDrawer from './app.lineDrawer'
 import RectangleResize from './app.rectResize'
 import FractalDemo from './app.fractal'
 import DemoResizeableObject from './demo.resizeableObject'
+import DemoResizeableObjectNew from './demo.resizeableObjectNew'
+import { IDemoBase } from './demobase'
 
 export interface KeyValuePair<T, A>
 {
@@ -14,12 +16,19 @@ export interface KeyValuePair<T, A>
     Value: A
 }
 
-export type ValidDemo = LineDrawer | RectangleResize | FractalDemo | DemoResizeableObject
+export type ValidDemo = LineDrawer | RectangleResize | FractalDemo | DemoResizeableObject | DemoResizeableObjectNew | IDemoBase
 
 export const DemoEntries: KeyValuePair<string, Function>[] =
 [
     {
         Key: 'Resizeable Objects',
+        Value: (engineInstance: Engine, parentContainer: PIXI.Container): ValidDemo =>
+        {
+            return new DemoResizeableObjectNew(engineInstance, parentContainer)
+        }
+    },
+    {
+        Key: 'Resizeable Objects (Broken)',
         Value: (engineInstance: Engine, parentContainer: PIXI.Container): ValidDemo =>
         {
             return new DemoResizeableObject(engineInstance, parentContainer)
