@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js'
+import IBaseDrawable from './baseDrawable'
 
 import ResizeableObject from './index'
 
@@ -30,7 +31,7 @@ export interface IResizeableObjectStroke
     Graphics: PIXI.Graphics
     Options: IStrokeOptions
 }
-export default class ResizeableObjectStroke implements IResizeableObjectStroke
+export default class ResizeableObjectStroke implements IResizeableObjectStroke, IBaseDrawable
 {
     public constructor(parent: ResizeableObject)
     {
@@ -38,7 +39,7 @@ export default class ResizeableObjectStroke implements IResizeableObjectStroke
     }
 
     public ResizeableObject: ResizeableObject = null
-    public Graphics: PIXI.Graphics = null
+    public Graphics: PIXI.Graphics = new PIXI.Graphics()
 
     private options: IStrokeOptions = { ...IStrokeOptionsDefault }
     get Options() 
@@ -62,7 +63,7 @@ export default class ResizeableObjectStroke implements IResizeableObjectStroke
 
     public draw(options: IStrokeOptions={}, bounds: PIXI.Rectangle=new PIXI.Rectangle()) : void
     {
-        this.Options = options
+        this.Options = {...options, alignment: 0.5}
 
         let positions = [
             [0, 0],
