@@ -1,12 +1,13 @@
 import * as PIXI from 'pixi.js'
 
-import Engine, {IEngineAddon} from './engine'
+import Engine from './engine'
+import BaseEngineAddon from './engine.addon.base'
 
-export default class ExampleAddon implements IEngineAddon
+export default class ExampleAddon  extends BaseEngineAddon
 {
     public constructor(engine: Engine)
     {
-        this.Engine = engine
+        super(engine)
 
         let text = new PIXI.Text('hello world!', {
             fill: 0xffffff,
@@ -18,21 +19,12 @@ export default class ExampleAddon implements IEngineAddon
         this.Container.addChild(text)
     }
 
-    public Engine: Engine
-    public Container: PIXI.Container = new PIXI.Container()
-
-    public enabled: boolean = false
     public enable() : void
     {
-        if (this.enabled) return
-        this.enabled = true
-        this.Engine.Application.stage.addChild(this.Container)
+        super.enable()
     }
     public disable() : void
     {
-        if (!this.enabled) return
-        this.enabled = false
-
-        this.Engine.Application.stage.removeChild(this.Container)
+        super.disable()
     }
 }
