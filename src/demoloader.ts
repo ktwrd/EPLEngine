@@ -8,48 +8,44 @@ import FractalDemo from './demo.fractal'
 import DemoResizeableObject from './demo.resizeableObject'
 import { IDemoBase } from './demobase'
 
-export interface KeyValuePair<T, A>
+export interface IRegisteredDemo
 {
-    Key: T,
-    Value: A
+    Key: string,
+    Value(engineInstance: Engine, parentContainer: PIXI.Container): IDemoBase
 }
+export interface IDemoLoader
+{
+    Engine: Engine
+    RegisteredDemos: IRegisteredDemo[]
 
-export type ValidDemo = IDemoBase
+    DemoContainer: PIXI.Container
+    TargetDemo: IDemoBase
+    TargetRegisteredDemo: IRegisteredDemo
 
-export const DemoEntries: KeyValuePair<string, Function>[] =
-[
-    {
-        Key: 'Resizeable Objects',
-        Value: (engineInstance: Engine, parentContainer: PIXI.Container): IDemoBase =>
-        {
-            return new DemoResizeableObject(engineInstance, parentContainer)
-        }
-    },
-    {
-        Key: 'Rectangle Drawer',
-        Value: (engineInstance: Engine, parentContainer: PIXI.Container): IDemoBase =>
-        {
-            return new LineDrawer(engineInstance, parentContainer)
-        }
-    },
-    {
-        Key: 'Fractal Test',
-        Value: (engineInstance: Engine, parentContainer: PIXI.Container): IDemoBase =>
-        {
-            return new FractalDemo(engineInstance, parentContainer)
-        }
-    }
-]
+    selectDemo(demo: IRegisteredDemo) : void
 
-export default class DemoLoader extends EventEmitter
+    HTMLDemoSelect: HTMLSelectElement
+    HTMLButtonStart: HTMLButtonElement
+
+    initalizeHTMLElements() : void
+    initalizeHTMLButton() : void
+
+    onstart() : void
+
+    getSelectedOption() : IRegisteredDemo
+
+    destroy() : void
+}
+export default class DemoLoader extends EventEmitter implements IDemoLoader
 {
     public constructor(engine: Engine, selectElement: HTMLSelectElement, startButtonElement: HTMLButtonElement)
     {
         super()
+        this.Engine = engine
         this.HTMLButtonStart = startButtonElement
         this.HTMLDemoSelect = selectElement
 
-        this.Engine = engine
+        this.registerDemos(DemoLoader.DefaultRegisteredDemos)
 
         this.DemoContainer = new PIXI.Container()
         this.Engine.Container.addChild(this.DemoContainer)
@@ -62,13 +58,47 @@ export default class DemoLoader extends EventEmitter
 
     public Engine: Engine = null
 
+    public RegisteredDemos: IRegisteredDemo[] = []
+    public static DefaultRegisteredDemos: IRegisteredDemo[] = [
+        {
+            Key: 'Resizeable Objects',
+            Value: (engineInstance: Engine, parentContainer: PIXI.Container): IDemoBase =>
+            {
+                return new DemoResizeableObject(engineInstance, parentContainer)
+            }
+        },
+        {
+            Key: 'Rectangle Drawer',
+            Value: (engineInstance: Engine, parentContainer: PIXI.Container): IDemoBase =>
+            {
+                return new LineDrawer(engineInstance, parentContainer)
+            }
+        },
+        {
+            Key: 'Fractal Test',
+            Value: (engineInstance: Engine, parentContainer: PIXI.Container): IDemoBase =>
+            {
+                return new FractalDemo(engineInstance, parentContainer)
+            }
+        }
+    ]
+
+    public registerDemo(demo: IRegisteredDemo) : void
+    {
+        this.RegisteredDemos.push(demo)
+        this.initalizeHTMLElements()
+    }
+    public registerDemos(demos: IRegisteredDemo[]) : void
+    {
+        this.RegisteredDemos = this.RegisteredDemos.concat(demos)
+        this.initalizeHTMLElements()
+    }
+
     public DemoContainer: PIXI.Container = null
-    public TargetDemo: ValidDemo = null
-    public TargetDemoKeyValuePair: KeyValuePair<string, Function> = null
+    public TargetDemo: IDemoBase = null
+    public TargetRegisteredDemo: IRegisteredDemo = null
 
-    private destroyed: boolean = false
-
-    public selectDemo(demo: KeyValuePair<string, Function>) : void
+    public selectDemo(demo: IRegisteredDemo) : void
     {
         if (this.TargetDemo != null)
         {
@@ -82,9 +112,10 @@ export default class DemoLoader extends EventEmitter
 
     public initalizeHTMLElements() : void
     {
-        for (let i = 0; i < DemoEntries.length; i++)
+        this.HTMLDemoSelect.innerHTML = `<option value="null" selected>None</option>`
+        for (let i = 0; i < this.RegisteredDemos.length; i++)
         {
-            this.HTMLDemoSelect.innerHTML += `<option value="${i}">${DemoEntries[i].Key}</option>`
+            this.HTMLDemoSelect.innerHTML += `<option value="${i}">${this.RegisteredDemos[i].Key}</option>`
         }
     }
     public initalizeHTMLButton() : void
@@ -94,18 +125,17 @@ export default class DemoLoader extends EventEmitter
 
     public onstart() : void
     {
-        console.log(this)
         let selected = this.getSelectedOption()
         if (this.TargetDemo != null)
             this.TargetDemo.destroy()
         if (selected == null)
             return
         
-        this.TargetDemoKeyValuePair = selected
-        this.TargetDemo = this.TargetDemoKeyValuePair.Value(this.Engine, this.DemoContainer)
+        this.TargetRegisteredDemo = selected
+        this.TargetDemo = this.TargetRegisteredDemo.Value(this.Engine, this.DemoContainer)
     }
 
-    public getSelectedOption() : KeyValuePair<string, Function>
+    public getSelectedOption() : IRegisteredDemo
     {
         let selectedItems = this.HTMLDemoSelect.selectedOptions
 
@@ -126,9 +156,10 @@ export default class DemoLoader extends EventEmitter
             return null
     
 
-        return DemoEntries[parseInt(targetItem)]
+        return this.RegisteredDemos[parseInt(targetItem)]
     }
 
+    protected destroyed: boolean = false
     public destroy() : void
     {
         this.Engine.Container.removeChild(this.DemoContainer)
