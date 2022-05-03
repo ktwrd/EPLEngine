@@ -4,7 +4,7 @@ import Engine from './engine'
 import DemoBase from './demobase'
 
 import * as _imgData from './image'
-import ResizeableObject from './app.resizeableObject'
+import ResizeableObject from './app.resizeableObject/index'
 
 const ImageData: string[] = _imgData.Data
 
@@ -20,6 +20,7 @@ export default class DemoResizeableObject extends DemoBase
 
     public DemoInstance: ResizeableObject
     public Target: PIXI.IDisplayObjectExtended
+    public TargetContainer: PIXI.Container
 
     public async fetchTestImage(index: number, scale: PIXI.Point = new PIXI.Point(1, 1)) : Promise<PIXI.Sprite>
     {
@@ -32,7 +33,17 @@ export default class DemoResizeableObject extends DemoBase
     }
     public async Initalize() : Promise<void>
     {
-        this.Target = await this.fetchTestImage(0, new PIXI.Point(0.1, 0.1))
-        this.DemoInstance.setTarget(this.Target)
+        this.TargetContainer = new PIXI.Container()
+        this.Target = await this.fetchTestImage(0, new PIXI.Point(1, 1))
+        let targetBounds = this.Target.getBounds()
+        this.TargetContainer.x = 100
+        this.TargetContainer.y = 100
+        this.TargetContainer.width = targetBounds.width
+        this.TargetContainer.height = targetBounds.height
+        this.TargetContainer.addChild(this.Target)
+        this.TargetContainer.width = 256
+        this.TargetContainer.height = 108
+        this.DemoInstance.setTarget(this.TargetContainer)
+        this.Container.addChild(this.DemoInstance.Container)
     }
 }
