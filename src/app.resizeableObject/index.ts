@@ -13,14 +13,12 @@ export interface IResizeableObject
 
     TargetContainer: PIXI.Container
     WidgetContainer: PIXI.Container
-    ProposedTarget: PIXI.Graphics
 
     widgetVisibility(alpha: number) : void
 
     setTarget(target: PIXI.IDisplayObjectExtended) : void
 
     draw(bounds: PIXI.Rectangle) : void
-    drawProposedTarget() : void
 
     onmouseup(event: PIXI.InteractionEvent) : void
     onmousedown(event: PIXI.InteractionEvent) : void
@@ -63,7 +61,6 @@ export default class ResizeableObject extends DemoBase implements IResizeableObj
     public stroke: ResizeableObjectStroke = null
     public TargetContainer: PIXI.Container = null
     public WidgetContainer: PIXI.Container = null
-    public ProposedTarget: PIXI.Graphics = new PIXI.Graphics()
 
     private initalize() : void
     {
@@ -142,18 +139,6 @@ export default class ResizeableObject extends DemoBase implements IResizeableObj
             this.sideInstances[i].Height = this.sideHeight
             this.sideInstances[i].draw(null, bounds)
         }
-
-        this.drawProposedTarget()
-    }
-    public drawProposedTarget() : void
-    {
-        this.ProposedTarget.clear()
-        this.ProposedTarget.lineStyle(1, 0xffffff, 0.8, 1, true)
-        this.ProposedTarget.drawRect(0, 0, 8, 8)
-        this.ProposedTarget.x = 0
-        this.ProposedTarget.y = 0
-
-        this.ProposedTarget.alpha = 0
     }
 
     public sideHeight: number = 16
