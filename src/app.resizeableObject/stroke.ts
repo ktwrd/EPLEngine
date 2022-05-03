@@ -74,6 +74,7 @@ export default class ResizeableObjectStroke implements IResizeableObjectStroke, 
         ]
         this.Graphics.clear()
 
+        this.Options.alignment = 0
         this.Graphics.lineStyle(this.Options)
 
         for (let i = 0; i < positions.length; i++)
@@ -84,10 +85,14 @@ export default class ResizeableObjectStroke implements IResizeableObjectStroke, 
             if (next != undefined)
                 this.Graphics.lineTo(next[0], next[1])
         }
+        this.Graphics.x = bounds.x
+        this.Graphics.y = bounds.y
     }
 
     public dirtyDraw(bounds: PIXI.Rectangle=new PIXI.Rectangle()) : void
     {
+        this.Graphics.x = bounds.x
+        this.Graphics.y = bounds.y
         this.Graphics.width = bounds.width
         this.Graphics.height = bounds.height
     }
