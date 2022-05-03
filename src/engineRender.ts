@@ -1,5 +1,4 @@
 import * as PIXI from 'pixi.js'
-import LineDrawer from './app.lineDrawer'
 
 import Engine from './engine'
 
