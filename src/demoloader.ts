@@ -28,13 +28,6 @@ export const DemoEntries: KeyValuePair<string, Function>[] =
         }
     },
     {
-        Key: 'Resizeable Objects (Broken)',
-        Value: (engineInstance: Engine, parentContainer: PIXI.Container): ValidDemo =>
-        {
-            return new DemoResizeableObject(engineInstance, parentContainer)
-        }
-    },
-    {
         Key: 'Resizeable Image',
         Value: (engineInstance: Engine, parentContainer: PIXI.Container): ValidDemo =>
         {
