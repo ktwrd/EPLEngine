@@ -3,6 +3,7 @@ import * as PIXI from 'pixi.js'
 import Engine from './engine'
 import BaseEngineAddon from './engine.addon.base'
 
+export type IndexedObject = [PIXI.Graphics?, PIXI.Container?]
 export default class DebugOutlineAddon extends BaseEngineAddon
 {
     public constructor(engine: Engine)
@@ -35,8 +36,8 @@ export default class DebugOutlineAddon extends BaseEngineAddon
         if (object == this.Container) return
         for (let i = 0; i < object.children.length; i++)
         {
-            this.IndexedObjects.push(this.initalizeObject(object.children[i]))
             let child: any = object.children[i]
+            this.IndexedObjects.push(this.initalizeObject(child))
             if (child.children != undefined && child.children .length > 0)
                 this.walkChildren(child)
         }
@@ -55,7 +56,7 @@ export default class DebugOutlineAddon extends BaseEngineAddon
         }
     }
 
-    public initalizeObject(object: PIXI.IDisplayObjectExtended) : IndexedObject
+    public initalizeObject(object: PIXI.Container) : IndexedObject
     {
         let result: IndexedObject = [null, null]
 
