@@ -120,19 +120,4 @@ export default class SideInteractive implements IBaseDrawable, ISideInteractive
     {
         this.ResizeableObject.setSideStatus(this.Location, false)
     }
-
-    public static readonly LocationColorMap: { [key in ESideLocation]?: number; } = Object.fromEntries([
-        [ESideLocation.NONE,    0xffffff],
-        [ESideLocation.TOP,     0xff0000],
-        [ESideLocation.BOTTOM,  0xffff00],
-        [ESideLocation.LEFT,    0x00ff00],
-        [ESideLocation.RIGHT,   0x00ffff],
-    ])
-    public static readonly LocationCursorMap: { [key in ESideLocation]?: string; } = Object.fromEntries([
-        [ESideLocation.NONE,    'move'],
-        [ESideLocation.TOP,     'n-resize'],
-        [ESideLocation.BOTTOM,  's-resize'],
-        [ESideLocation.LEFT,    'w-resize'],
-        [ESideLocation.RIGHT,   'e-resize'],
-    ])
 }
