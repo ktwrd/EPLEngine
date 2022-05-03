@@ -210,6 +210,7 @@ export default class ResizeableObject extends DemoBase implements IResizeableObj
     //- Event.Mouse.Up
     public onmouseup(event: PIXI.InteractionEvent) : void
     {   if (this.destroyed) return
+        if (this.mouseSnapshot == null) return
         this.mouseSnapshot.cursorPositions[1] = new PIXI.Point(event.data.global.x, event.data.global.y)
         this.mouseSnapshot.timestamps[1] = Date.now()
 
@@ -329,6 +330,7 @@ export default class ResizeableObject extends DemoBase implements IResizeableObj
 
     public calculateBounds() : void
     {
+        if (this.mouseSnapshot == null) return
         let newBounds: PIXI.Rectangle = this.fetchCalculatedBounds(this.mouseSnapshot)
         this.Container.x = newBounds.x
         this.Container.y = newBounds.y
