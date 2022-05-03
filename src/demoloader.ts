@@ -3,11 +3,9 @@ import EventEmitter from 'events'
 
 import Engine from './engine'
 
-import LineDrawer from './app.lineDrawer'
-import RectangleResize from './app.rectResize'
-import FractalDemo from './app.fractal'
+import LineDrawer from './demo.lineDrawer'
+import FractalDemo from './demo.fractal'
 import DemoResizeableObject from './demo.resizeableObject'
-import DemoResizeableObjectNew from './demo.resizeableObjectNew'
 import { IDemoBase } from './demobase'
 
 export interface KeyValuePair<T, A>
@@ -16,34 +14,27 @@ export interface KeyValuePair<T, A>
     Value: A
 }
 
-export type ValidDemo = LineDrawer | RectangleResize | FractalDemo | DemoResizeableObject | DemoResizeableObjectNew | IDemoBase
+export type ValidDemo = IDemoBase
 
 export const DemoEntries: KeyValuePair<string, Function>[] =
 [
     {
         Key: 'Resizeable Objects',
-        Value: (engineInstance: Engine, parentContainer: PIXI.Container): ValidDemo =>
+        Value: (engineInstance: Engine, parentContainer: PIXI.Container): IDemoBase =>
         {
-            return new DemoResizeableObjectNew(engineInstance, parentContainer)
-        }
-    },
-    {
-        Key: 'Resizeable Image',
-        Value: (engineInstance: Engine, parentContainer: PIXI.Container): ValidDemo =>
-        {
-            return new RectangleResize(engineInstance, parentContainer)
+            return new DemoResizeableObject(engineInstance, parentContainer)
         }
     },
     {
         Key: 'Rectangle Drawer',
-        Value: (engineInstance: Engine, parentContainer: PIXI.Container): ValidDemo =>
+        Value: (engineInstance: Engine, parentContainer: PIXI.Container): IDemoBase =>
         {
             return new LineDrawer(engineInstance, parentContainer)
         }
     },
     {
         Key: 'Fractal Test',
-        Value: (engineInstance: Engine, parentContainer: PIXI.Container): ValidDemo =>
+        Value: (engineInstance: Engine, parentContainer: PIXI.Container): IDemoBase =>
         {
             return new FractalDemo(engineInstance, parentContainer)
         }
