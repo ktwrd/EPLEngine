@@ -3,6 +3,9 @@ import './styles/index.scss'
 import Engine from './engine'
 import DemoLoader from './demoloader'
 
+import * as Library from './library'
+console.log(Library)
+
 let element: HTMLElement = document.querySelector('.engine')
 let engineInstance: Engine = new Engine(element)
 
