@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html debug_layout>
+    <head>
+        <link href="style.css" type="text/css" rel="stylesheet" />
+    </head>
+    <body>
+        <div class="engine shadow rounded"></div>
+        <div class="engine-sidebar shadow bg-body rounded p-3">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        EPLngine Demos
+                    </div>
+                    <div class="card-body">
+                        <div class="col">
+                            <div class="row">
+                                <div class="mb-3">
+                                    <label for="demoselect_input" class="form-label">Select Demo</label>
+                                    <select class="form-control form-control-sm form-select" id="demoselect_input">
+                                        <option value="null" selected>None</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <button type="button" class="btn btn-outline-secondary" action="start">Start</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        Engine Addons
+                    </div>
+                    <div class="card-body">
+                        <div class="col" id="engine_addons_toggle_list">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script src="bundle.js" type="text/javascript"></script>
+</html>

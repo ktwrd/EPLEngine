@@ -1,0 +1,24 @@
+$debug-layout: false;
+$debug-layout-outline-color: #ff0000;
+$debug-layout-outline-style: solid;
+$debug-layout-outline-width: 1px;
+
+@mixin debug-layout-outline($enable: false)
+{
+    outline-style: none;
+    outline-width: 0;
+    @if $enable
+    {
+        outline-style: $debug-layout-outline-style;
+        outline-color: $debug-layout-outline-color;
+        outline-width: $debug-layout-outline-width;
+    }
+}
+
+html[debug_layout]
+{
+    *
+    {
+        @include debug-layout-outline($enable: true);
+    }
+}
