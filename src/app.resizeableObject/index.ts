@@ -15,11 +15,26 @@ export interface IResizeableObject
     WidgetContainer: PIXI.Container
     ProposedTarget: PIXI.Graphics
 
+    widgetVisibility(alpha: number) : void
+
     setTarget(target: PIXI.IDisplayObjectExtended) : void
+
+    draw(bounds: PIXI.Rectangle) : void
+    drawProposedTarget() : void
 
     onmouseup(event: PIXI.InteractionEvent) : void
     onmousedown(event: PIXI.InteractionEvent) : void
     onmousemove(event: PIXI.InteractionEvent) : void
+
+    sideHeight: number,
+    sideInstances: SideInteractive[]
+    SideStatus: { [key in ESideLocation]?: boolean }
+
+    setSideStatus(side: ESideLocation, status: boolean) : void
+    declaredown(side: ESideLocation) : void
+
+    fetchCalculatedBounds(snapshot: IMouseSnapshot) : PIXI.Rectangle
+    calculateBounds() : void
 }
 
 export interface IStrokeOptions extends PIXI.ILineStyleOptions
