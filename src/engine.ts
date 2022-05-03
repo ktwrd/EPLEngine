@@ -46,6 +46,7 @@ export interface IEngine
     registeredAddons: EngineAddonDictionary
 
     registerAddon(label: string, addon: IEngineAddon) : void
+    registerAddons(addonArray: EngineAddonArray) : void
 }
 export default class Engine extends EventEmitter {
     public constructor(engineElement: HTMLElement, initalize: boolean=true)
@@ -134,6 +135,18 @@ export default class Engine extends EventEmitter {
         this.registeredAddons[label] = {
             enabled: false,
             addon
+        }
+        this.emit('registerAddon')
+    }
+    public registerAddons(addonArray: EngineAddonArray) : void
+    {
+        this.emit('beforeregisterAddon')
+        for (let i = 0; i < addonArray.length; i++)
+        {
+            this.registeredAddons[addonArray[i][0]] = {
+                enabled: false,
+                addon: addonArray[i][1]
+            }
         }
         this.emit('registerAddon')
     }
