@@ -1,4 +1,4 @@
-import txt from './img-1.txt'
+import txt from '../data/img-1.txt'
 
 export const Data: string[] = [
     txt

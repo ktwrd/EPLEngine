@@ -7,7 +7,7 @@
     "scripts": {
         "ts:watch": "tsc --watch",
         "ts:build": "tsc && tsc -p tsconfig.cjs.json",
-        "serve": "webpack serve --config webpack.config.js",
+        "serve:demo": "webpack serve --config webpack.demo.js",
         "build": "webpack build --config webpack.config.js",
         "build:npm": "webpack build --config webpack.npm.js",
         "postinstall": "npm run build:npm"
