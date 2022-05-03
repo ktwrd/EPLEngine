@@ -1,20 +1,3 @@
 {
-    "include": [
-        "src/**/*.ts"
-    ],
-    "exclude": [
-        "src/**/*.txt"
-    ],
-    "compilerOptions": {
-        "noImplicitAny": true,
-        "inlineSources": false,
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "target": "ES2017",
-        "sourceMap": true,
-        "esModuleInterop": true
-    },
-    "awesomeTypescriptLoaderOptions": {
-        /* ... */
-    }
+    "extends": "./tsconfig.base.json"
 }
