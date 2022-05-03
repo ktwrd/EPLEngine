@@ -15,13 +15,14 @@ export enum ESideLocation
 }
 export interface ISideInteractive
 {
-    Location: ESideLocation
-    Height: number
-}
-export const ISideInteractiveDefault: ISideInteractive = 
-{
-    Location: ESideLocation.NONE,
-    Height: 6
+    ResizeableObject: ResizeableObject
+    Location?: ESideLocation
+    Height?: number
+    getLocationMap(bounds: PIXI.Rectangle, targetHeight: number) : { [key in ESideLocation]?: number[][]; }
+    draw(options: any, bounds: PIXI.Rectangle) : void
+
+    onmousedown(event: PIXI.InteractionEvent) : void
+    onmouseup(event: PIXI.InteractionEvent) : void
 }
 export default class SideInteractive implements IBaseDrawable, ISideInteractive
 {
