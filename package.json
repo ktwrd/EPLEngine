@@ -1,11 +1,16 @@
 {
     "name": "eplengine",
     "version": "1.0.0",
+    "main": "dist/index.js",
+    "typings": "dist/index.d.ts",
+    "module": "esm/index.js",
     "scripts": {
-        "ts:watch": "tsc --project tsconfig.json --watch",
-        "ts:build": "tsc --project tsconfig.json --build",
+        "ts:watch": "tsc --watch",
+        "ts:build": "tsc && tsc -p tsconfig.cjs.json",
         "serve": "webpack serve --config webpack.config.js",
-        "build": "webpack build --config webpack.config.js"
+        "build": "webpack build --config webpack.config.js",
+        "build:npm": "webpack build --config webpack.npm.js",
+        "postinstall": "npm run build:npm"
     },
     "author": "Kate Ward <kate@dariox.club>",
     "license": "PROPITIRARY",
