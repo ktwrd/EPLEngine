@@ -5,6 +5,7 @@ import EngineRender from './engineRender'
 import EngineInteraction from './engineInteraction'
 import EngineMouseOverlay from './engineMouseOverlay'
 import ExampleAddon from './engine.addon.example'
+import DebugOutlineAddon from './engine.addon.debugOutline'
 
 export interface IEngineAddon
 {
@@ -52,6 +53,7 @@ export default class Engine extends EventEmitter {
         this.Interaction = new EngineInteraction(this)
         this.registerAddon('cursorPositionOverlay', new EngineMouseOverlay(this))
         this.registerAddon('example', new ExampleAddon(this))
+        this.registerAddon('debugOutline', new DebugOutlineAddon(this))
     }
 
     public registeredAddons: {[key: string]: { enabled: boolean, addon: IEngineAddon }  } = {}
@@ -79,7 +81,7 @@ export default class Engine extends EventEmitter {
 
     public setAddon(label: string, enable: boolean) : void
     {
-        console.log(`${label} -> ${enable}`)
+        console.log(`[engine->setAddon] label: ${label} -> enable: ${enable}`)
         if (this.registeredAddons[label] == undefined)
             return
         if (this.registeredAddons[label].enabled == enable)
