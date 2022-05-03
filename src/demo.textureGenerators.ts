@@ -22,10 +22,8 @@ export const TextureGenerators: TextureGeneratorMethod[] = [
             {
                 if (curr >= colors.length)
                     curr = 0
-                console.log(`color:::: `, curr, colors[curr])
                 graphics.beginFill(colors[curr], 1)
                 graphics.drawRect(x * opts.size, y * opts.size, opts.size, opts.size)
-                console.log(`X:${x* opts.size}, Y:${y* opts.size}`)
 
                 graphics.endFill()
                 curr += 1
