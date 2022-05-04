@@ -5,10 +5,11 @@ import Engine from './engine'
 
 export default class EngineInteraction extends EventEmitter
 {
-    public constructor (engine: Engine)
+    public constructor (engine: Engine, emitEvents: boolean = true)
     {
         super()
         this.Engine = engine
+        this.enableEmit = emitEvents
         this.Initalize()
 
         this.Engine.Application.view.addEventListener('mousedown', () => this.emit('mouse:down', this.MousePosition))
@@ -18,6 +19,7 @@ export default class EngineInteraction extends EventEmitter
     }
 
     public MousePosition: PIXI.InteractionEvent
+    public enableEmit: boolean = true
 
     public AliasedEvents = {
         'mousemove': 'mouse:move',
@@ -36,7 +38,8 @@ export default class EngineInteraction extends EventEmitter
                 item[0],
                 (...param) => 
                 {
-                    this.emit(item[1], ...param)
+                    if (this.enableEmit)
+                        this.emit(item[1], ...param)
                 })
         }
     }

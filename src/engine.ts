@@ -72,6 +72,17 @@ export default class Engine extends EventEmitter
 
     public MouseOverlay: EngineMouseOverlay = null
 
+    private customInteraction: boolean = false
+    get CustomInteraction ()
+    {
+        return this.customInteraction
+    }
+    set CustomInteraction (value: boolean)
+    {
+        this.customInteraction = value
+        this.Interaction.enableEmit = value
+    }
+
     public initalize (): void
     {
         if (this.Application != null)
@@ -89,7 +100,7 @@ export default class Engine extends EventEmitter
         this.Application.stage.addChild(this.Container)
 
         this.Render = new EngineRender(this)
-        this.Interaction = new EngineInteraction(this)
+        this.Interaction = new EngineInteraction(this, this.CustomInteraction)
         this.registerAddon('cursorPositionOverlay', new EngineMouseOverlay(this))
         this.registerAddon('example', new ExampleAddon(this))
         this.registerAddon('debugOutline', new DebugOutlineAddon(this))
