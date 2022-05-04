@@ -6,7 +6,7 @@ import * as _EngineMouseOverlay from './engineMouseOverlay'
 
 import _DemoBase from './demobase'
 import _DemoLoader from './demoloader'
-import * as _Utilities from './utilities'
+import _Utilities from './utilities'
 
 import * as _ResizeableObject from './app.resizeableObject/library'
 
@@ -42,5 +42,6 @@ export const Addons = _Addons
 export const ResizeableObject = _ResizeableObject
 
 export const Utilities = _Utilities
+export type Utilities = _Utilities
 
 export const LICENSE = _LICENSE
