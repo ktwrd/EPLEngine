@@ -14,9 +14,11 @@
     "author": "Kate Ward <kate@dariox.club>",
     "license": "AGPL-3.0",
     "dependencies": {
+        "events": "^3.3.0",
         "pixi.js": "^6.3.0"
     },
     "devDependencies": {
+        "@types/events": "^3.0.0",
         "@types/pixi.js": "^5.0.0",
         "typescript": "^4.6.3"
     }
