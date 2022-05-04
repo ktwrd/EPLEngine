@@ -4,13 +4,12 @@ import EPLEngine from 'eplengine'
 const Engine = EPLEngine.Engine.default
 const DemoLoader = EPLEngine.DemoLoader.default
 
-console.log(EPLEngine)
-
-// import Library from './../dist/library.js'
-// console.log(Library)
-
 let element: HTMLElement = document.querySelector('.engine')
-let engineInstance = new Engine(element)
+let engineInstance = new Engine({
+    width: element.clientWidth,
+    height: element.clientHeight,
+    resizeTo: element
+}, element)
 
 let btn: HTMLButtonElement = document.querySelector('button[action=start]')
 let sel: HTMLSelectElement = document.querySelector('select#demoselect_input')
@@ -21,7 +20,7 @@ window.addEventListener('resize', () => {
     engineInstance.setSize(element.clientWidth, element.clientHeight)
 })
 
-function generateEngineAddonList() : void
+function generateEngineAddonList (): void
 {
     let htmlArray = []
     let entries = Object.entries(engineInstance.registeredAddons)
@@ -42,7 +41,8 @@ function generateEngineAddonList() : void
     let allQueries = document.querySelectorAll('[action=toggle_addon]')
     for (let i = 0; i < allQueries.length; i++)
     {
-        allQueries[i].addEventListener('click', (event) => {
+        allQueries[i].addEventListener('click', (event) =>
+        {
             let target: any = event.target
             if (target.attributes.label == undefined || typeof target.attributes.label != 'object') return
             if (target.checked == undefined || typeof target.checked != 'boolean') return
