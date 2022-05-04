@@ -10,7 +10,7 @@ import * as _Utilities from './utilities'
 
 import * as _ResizeableObject from './app.resizeableObject/library'
 
-import _Addons from './engine.addons'
+import * as _Addons from './engine.addons'
 
 import _LICENSE from '../LICENSE.txt'
 

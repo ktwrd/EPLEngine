@@ -3,7 +3,7 @@ import * as PIXI from 'pixi.js'
 import Engine from './engine'
 import DemoBase from './demobase'
 
-export default class LineDrawer extends DemoBase
+export class LineDrawer extends DemoBase
 {
     public constructor (engine: Engine, parent: PIXI.Container)
     {
@@ -159,3 +159,4 @@ export default class LineDrawer extends DemoBase
         align: 'left'
     })
 }
+export default LineDrawer

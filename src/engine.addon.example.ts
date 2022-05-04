@@ -3,7 +3,7 @@ import * as PIXI from 'pixi.js'
 import Engine from './engine'
 import BaseEngineAddon from './engine.addon.base'
 
-export default class ExampleAddon extends BaseEngineAddon
+export class ExampleAddon extends BaseEngineAddon
 {
     public constructor (engine: Engine)
     {
@@ -28,3 +28,4 @@ export default class ExampleAddon extends BaseEngineAddon
         super.disable()
     }
 }
+export default ExampleAddon

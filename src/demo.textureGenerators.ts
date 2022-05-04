@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js'
 
-type TextureGeneratorMethod = () => PIXI.Container
+export type TextureGeneratorMethod = () => PIXI.Container
 export const TextureGenerators: TextureGeneratorMethod[] = [
     (): PIXI.Container =>
     {
@@ -34,3 +34,4 @@ export const TextureGenerators: TextureGeneratorMethod[] = [
         return graphics
     }
 ]
+export default TextureGenerators

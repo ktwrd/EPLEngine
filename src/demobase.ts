@@ -12,7 +12,7 @@ export interface IDemoBase
     destroy (): void
 }
 
-export default class DemoBase extends EventEmitter implements IDemoBase
+export class DemoBase extends EventEmitter implements IDemoBase
 {
     public constructor (engine: Engine, parentContainer: PIXI.Container)
     {
@@ -37,3 +37,4 @@ export default class DemoBase extends EventEmitter implements IDemoBase
         this.destroyed = true
     }
 }
+export default DemoBase

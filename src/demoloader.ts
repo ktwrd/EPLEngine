@@ -36,7 +36,7 @@ export interface IDemoLoader
 
     destroy (): void
 }
-export default class DemoLoader extends EventEmitter implements IDemoLoader
+export class DemoLoader extends EventEmitter implements IDemoLoader
 {
     public constructor (engine: Engine, selectElement: HTMLSelectElement, startButtonElement: HTMLButtonElement)
     {
@@ -167,3 +167,4 @@ export default class DemoLoader extends EventEmitter implements IDemoLoader
         this.destroyed = true
     }
 }
+export default DemoLoader

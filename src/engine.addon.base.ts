@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js'
 
 import Engine, { IEngineAddon } from './engine'
 
-export default class BaseEngineAddon implements IEngineAddon
+export class BaseEngineAddon implements IEngineAddon
 {
     public constructor (engine: Engine)
     {
@@ -27,3 +27,4 @@ export default class BaseEngineAddon implements IEngineAddon
         this.Engine.Application.stage.removeChild(this.Container)
     }
 }
+export default BaseEngineAddon

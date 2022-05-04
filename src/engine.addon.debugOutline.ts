@@ -4,7 +4,7 @@ import Engine from './engine'
 import BaseEngineAddon from './engine.addon.base'
 
 export type IndexedObject = [PIXI.Graphics?, PIXI.Container?]
-export default class DebugOutlineAddon extends BaseEngineAddon
+export class DebugOutlineAddon extends BaseEngineAddon
 {
     public constructor (engine: Engine)
     {
@@ -101,3 +101,4 @@ export default class DebugOutlineAddon extends BaseEngineAddon
         this.clean()
     }
 }
+export default DebugOutlineAddon

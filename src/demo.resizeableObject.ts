@@ -7,7 +7,7 @@ import ResizeableObject from './app.resizeableObject/index'
 
 import { TextureGenerators } from './demo.textureGenerators'
 
-export default class DemoResizeableObject extends DemoBase
+export class DemoResizeableObject extends DemoBase
 {
     public constructor (engine: Engine, parent: PIXI.Container)
     {
@@ -53,3 +53,4 @@ export default class DemoResizeableObject extends DemoBase
         this.Container.addChild(this.DemoInstance.Container)
     }
 }
+export default DemoResizeableObject
