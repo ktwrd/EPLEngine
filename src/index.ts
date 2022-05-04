@@ -1,35 +1,46 @@
-import * as Engine from './engine'
-import * as EngineRenderer from './engineRender'
-import * as EngineRenderParameter from './engineRenderParameter'
-import * as EngineInteraction from './engineInteraction'
-import * as EngineMouseOverlay from './engineMouseOverlay'
+import _Engine from './engine'
+import _EngineRenderer from './engineRender'
+import * as _EngineRenderParameter from './engineRenderParameter'
+import _EngineInteraction from './engineInteraction'
+import * as _EngineMouseOverlay from './engineMouseOverlay'
 
-import * as DemoBase from './demobase'
-import * as DemoLoader from './demoloader'
-import * as Utilities from './utilities'
+import _DemoBase from './demobase'
+import _DemoLoader from './demoloader'
+import * as _Utilities from './utilities'
 
-import ResizeableObject from './app.resizeableObject/library'
+import _ResizeableObject from './app.resizeableObject/library'
 
-import Addons from './engine.addons'
+import _Addons from './engine.addons'
 
 import _LICENSE from '../LICENSE.txt'
 
-export default {
-    _LICENSE: _LICENSE,
+//- Engine
+export const Engine = _Engine
+export type Engine = _Engine
 
-    Engine,
+export const EngineRenderer = _EngineRenderer
+export type EngineRenderer = _EngineRenderer
 
-    EngineRenderer,
-    EngineRenderParameter,
-    EngineInteraction,
-    EngineMouseOverlay,
+export const EngineRenderParameter = _EngineRenderParameter
 
-    DemoBase,
-    DemoLoader,
+export const EngineInteraction = _EngineInteraction
+export type EngineInteraction = _EngineInteraction
 
-    Addons,
+export const EngineMouseOverlay = _EngineMouseOverlay
+export type EngineMouseOverlay = _EngineMouseOverlay.default
 
-    ResizeableObject,
+//- Demo
+export const DemoBase = _DemoBase
+export type DemoBase = _DemoBase
 
-    Utilities
-}
+export const DemoLoader = _DemoLoader
+export type DemoLoader = _DemoLoader
+
+//- Other
+export const Addons = _Addons
+
+export const ResizeableObject = _ResizeableObject
+
+export const Utilities = _Utilities
+
+export const LICENSE = _LICENSE
