@@ -12,7 +12,11 @@ import ResizeableObject from './app.resizeableObject/library'
 
 import Addons from './engine.addons'
 
+import _LICENSE from '../LICENSE.txt'
+
 export default {
+    _LICENSE: _LICENSE,
+
     Engine,
 
     EngineRenderer,
