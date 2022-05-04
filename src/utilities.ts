@@ -23,5 +23,19 @@ export class Utilities
             Utilities.numberSnapToGrid(point.y, gridSize)
         )
     }
+    public static async fetchGeneratorImage (engine: EPLEngine.Engine, index: number, scale: PIXI.Point = new PIXI.Point(1, 1)): Promise<PIXI.Sprite>
+    {
+        let item = TextureGenerators[index]()
+        item.setTransform()
+        let bounds = item.getBounds()
+        let renderTexture = PIXI.RenderTexture.create({ width: bounds.width + bounds.x, height: bounds.height + bounds.y })
+        engine.Application.renderer.render(item, { renderTexture })
+
+        let sprite = new PIXI.Sprite(renderTexture)
+        sprite.scale.set(scale.x, scale.y)
+        sprite.x = 0
+        sprite.y = 0
+        return sprite
+    }
 }
 export default Utilities
