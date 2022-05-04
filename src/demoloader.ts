@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js'
-import EventEmitter from 'events'
+import { EventEmitter } from 'events'
 
 import Engine from './engine'
 
