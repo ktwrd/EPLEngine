@@ -3,7 +3,7 @@ import * as PIXI from 'pixi.js'
 import Engine from './engine'
 import DemoBase from './demobase'
 
-function fx (a: number, x: number): number
+export function fx (a: number, x: number): number
 {
     const x2 = x * x
     const top = 2 * (1 - a) * x2
@@ -40,7 +40,7 @@ export interface IMiraYield
     point: IMiraYieldPoint
 }
 
-function* mira (params: IMiraParams): Generator<IMiraYield>
+export function* mira (params: IMiraParams): Generator<IMiraYield>
 {
     params = { ...IMiraParamsDefault, ...params }
 
@@ -64,7 +64,7 @@ function* mira (params: IMiraParams): Generator<IMiraYield>
     }
 }
 
-export default class FractalDemo extends DemoBase
+export class FractalDemo extends DemoBase
 {
     public constructor (engine: Engine, parent: PIXI.Container)
     {
@@ -115,3 +115,4 @@ export default class FractalDemo extends DemoBase
         this.Graphics.drawCircle(x, y, 1)
     }
 }
+export default FractalDemo
