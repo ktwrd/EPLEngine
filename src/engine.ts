@@ -11,8 +11,8 @@ export interface IEngineAddon
 {
     enabled: boolean,
 
-    enable() : void,
-    disable() : void
+    enable (): void,
+    disable (): void
 }
 export type EngineAddonArray = [string, IEngineAddon][]
 export type EngineAddonDictionary = {
@@ -25,7 +25,7 @@ export type EngineAddonDictionary = {
 
 export interface IEngine
 {
-    constructor(engineElement: HTMLElement, initalize: boolean) : void
+    constructor (engineElement: HTMLElement, initalize: boolean): void
 
     HTMLElement: HTMLElement
     Application: PIXI.Application
@@ -36,26 +36,32 @@ export interface IEngine
 
     MouseOverlay: EngineMouseOverlay
 
-    initalize() : void
+    initalize (): void
 
-    beforeDestroy() : void
-    destroy() : void
+    beforeDestroy (): void
+    destroy (): void
 
-    setSize(width: number, height: number) : void
+    setSize (width: number, height: number): void
 
     registeredAddons: EngineAddonDictionary
 
-    registerAddon(label: string, addon: IEngineAddon) : void
-    registerAddons(addonArray: EngineAddonArray) : void
+    registerAddon (label: string, addon: IEngineAddon): void
+    registerAddons (addonArray: EngineAddonArray): void
 }
-export default class Engine extends EventEmitter {
-    public constructor(engineElement: HTMLElement, initalize: boolean=true)
+export default class Engine extends EventEmitter
+{
+    public constructor (
+        applicationOptions: PIXI.IApplicationOptions = {},
+        targetElement?: HTMLElement)
     {
         super()
-        this.HTMLElement = engineElement
-        if (initalize)
-            this.initalize()
+        if (targetElement != null)
+            this.HTMLElement = targetElement
+        this.options = applicationOptions
+        this.initalize()
     }
+
+    private options: PIXI.IApplicationOptions = {}
 
     public HTMLElement: HTMLElement = null
     public Application: PIXI.Application = null
@@ -66,19 +72,15 @@ export default class Engine extends EventEmitter {
 
     public MouseOverlay: EngineMouseOverlay = null
 
-    public initalize() : void
+    public initalize (): void
     {
         if (this.Application != null)
         {
             this.HTMLElement.removeChild(this.Application.view)
             this.destroy()
         }
-        
-        this.Application = new PIXI.Application({
-            width: this.HTMLElement.clientWidth,
-            height: this.HTMLElement.clientHeight,
-            resizeTo: this.HTMLElement
-        })
+
+        this.Application = new PIXI.Application(this.options)
         this.HTMLElement.appendChild(this.Application.view)
         this.Application.stage.interactive = true
         this.Container = new PIXI.Container()
@@ -93,11 +95,11 @@ export default class Engine extends EventEmitter {
         this.registerAddon('debugOutline', new DebugOutlineAddon(this))
     }
 
-    public beforeDestroy() : void
+    public beforeDestroy (): void
     {
         this.emit('beforeDestroy')
     }
-    public destroy() : void
+    public destroy (): void
     {
         this.beforeDestroy()
         this.emit('destroy')
@@ -106,7 +108,7 @@ export default class Engine extends EventEmitter {
     }
 
 
-    public setSize(width: number, height: number) : void
+    public setSize (width: number, height: number): void
     {
         this.Application.stage.width = width
         this.Application.stage.height = height
@@ -116,7 +118,7 @@ export default class Engine extends EventEmitter {
 
     public registeredAddons: EngineAddonDictionary = {}
 
-    public setAddon(label: string, enable: boolean) : void
+    public setAddon (label: string, enable: boolean): void
     {
         console.log(`[engine->setAddon] label: ${label} -> enable: ${enable}`)
         if (this.registeredAddons[label] == undefined)
@@ -129,7 +131,7 @@ export default class Engine extends EventEmitter {
         else
             this.registeredAddons[label].addon.disable()
     }
-    public registerAddon(label: string, addon: IEngineAddon) : void
+    public registerAddon (label: string, addon: IEngineAddon): void
     {
         this.emit('beforeregisterAddon')
         this.registeredAddons[label] = {
@@ -138,7 +140,7 @@ export default class Engine extends EventEmitter {
         }
         this.emit('registerAddon')
     }
-    public registerAddons(addonArray: EngineAddonArray) : void
+    public registerAddons (addonArray: EngineAddonArray): void
     {
         this.emit('beforeregisterAddon')
         for (let i = 0; i < addonArray.length; i++)
