@@ -6,6 +6,7 @@
     "module": "esm/index.js",
     "scripts": {
         "ts:watch": "tsc --watch",
+        "ts:watch:cjs": "tsc --watch -p tsconfig.cjs.json",
         "ts:build": "tsc && tsc -p tsconfig.cjs.json",
         "serve:demo": "webpack serve --config webpack.demo.js",
         "build": "webpack build --config webpack.config.js",
