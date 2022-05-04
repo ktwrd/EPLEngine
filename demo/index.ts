@@ -1,8 +1,7 @@
 import './styles/index.scss'
 
-import EPLEngine from 'eplengine'
-const Engine = EPLEngine.Engine.default
-const DemoLoader = EPLEngine.DemoLoader.default
+import { Engine, DemoLoader } from 'eplengine'
+import * as EPLEngine from 'eplengine'
 
 let element: HTMLElement = document.querySelector('.engine')
 let engineInstance = new Engine({
