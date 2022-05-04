@@ -23,6 +23,31 @@ export class Utilities
             Utilities.numberSnapToGrid(point.y, gridSize)
         )
     }
+    public static async imageElementFromInputElement (element: HTMLInputElement): Promise<HTMLImageElement[]>
+    {
+        let imageArray: HTMLImageElement[] = []
+
+        let promiseArr: Promise<void>[] = []
+        for (let i = 0; i < element.files.length; i++)
+        {
+            promiseArr.push(new Promise((resolve) =>
+            {
+                let imageElement = new Image()
+                let reader = new FileReader()
+                reader.onload = () =>
+                {
+                    imageElement.src = reader.result.toString()
+                    imageArray.push(imageElement)
+                    resolve()
+                }
+                reader.readAsDataURL(element.files[i])
+            }))
+        }
+
+        await Promise.all(promiseArr)
+
+        return imageArray
+    }
     public static async fetchGeneratorImage (engine: EPLEngine.Engine, index: number, scale: PIXI.Point = new PIXI.Point(1, 1)): Promise<PIXI.Sprite>
     {
         let item = TextureGenerators[index]()
