@@ -2,7 +2,8 @@ import * as PIXI from 'pixi.js'
 
 type TextureGeneratorMethod = () => PIXI.Container
 export const TextureGenerators: TextureGeneratorMethod[] = [
-    () : PIXI.Container => {
+    (): PIXI.Container =>
+    {
         let graphics = new PIXI.Graphics()
         graphics.lineStyle(1, 0x000000, 0, 0, true)
 

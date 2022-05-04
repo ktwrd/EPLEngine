@@ -1,10 +1,10 @@
 import * as PIXI from 'pixi.js'
 
-import Engine, {IEngineAddon} from './engine'
+import Engine, { IEngineAddon } from './engine'
 
 export default class BaseEngineAddon implements IEngineAddon
 {
-    public constructor(engine: Engine)
+    public constructor (engine: Engine)
     {
         this.Engine = engine
     }
@@ -13,13 +13,13 @@ export default class BaseEngineAddon implements IEngineAddon
     public Container: PIXI.Container = new PIXI.Container()
 
     public enabled: boolean = false
-    public enable() : void
+    public enable (): void
     {
         if (this.enabled) return
         this.enabled = true
         this.Engine.Application.stage.addChild(this.Container)
     }
-    public disable() : void
+    public disable (): void
     {
         if (!this.enabled) return
         this.enabled = false

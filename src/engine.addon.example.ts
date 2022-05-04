@@ -3,9 +3,9 @@ import * as PIXI from 'pixi.js'
 import Engine from './engine'
 import BaseEngineAddon from './engine.addon.base'
 
-export default class ExampleAddon  extends BaseEngineAddon
+export default class ExampleAddon extends BaseEngineAddon
 {
-    public constructor(engine: Engine)
+    public constructor (engine: Engine)
     {
         super(engine)
 
@@ -19,11 +19,11 @@ export default class ExampleAddon  extends BaseEngineAddon
         this.Container.addChild(text)
     }
 
-    public enable() : void
+    public enable (): void
     {
         super.enable()
     }
-    public disable() : void
+    public disable (): void
     {
         super.disable()
     }

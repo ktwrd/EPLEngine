@@ -4,15 +4,16 @@ import Engine from './engine'
 
 import * as EngineRenderParameter from './engineRenderParameter'
 
-export default class EngineRender {
-    public constructor(engine: Engine)
+export default class EngineRender
+{
+    public constructor (engine: Engine)
     {
         this.Engine = engine
     }
 
     public Engine: Engine = null
 
-    public drawCircle(options?: EngineRenderParameter.Circle): PIXI.Graphics
+    public drawCircle (options?: EngineRenderParameter.Circle): PIXI.Graphics
     {
         options = { ...EngineRenderParameter.DefaultCircle, ...options }
         let graphics: PIXI.Graphics = new PIXI.Graphics()
@@ -33,7 +34,7 @@ export default class EngineRender {
         return graphics
     }
 
-    public drawLine(options?: EngineRenderParameter.PointArray): PIXI.Graphics
+    public drawLine (options?: EngineRenderParameter.PointArray): PIXI.Graphics
     {
         options = { ...EngineRenderParameter.DefaultPointArray, ...options }
         let graphics: PIXI.Graphics = new PIXI.Graphics()
@@ -63,7 +64,7 @@ export default class EngineRender {
         return graphics
     }
 
-    public drawRectangle(options?: EngineRenderParameter.Rectangle): PIXI.Graphics
+    public drawRectangle (options?: EngineRenderParameter.Rectangle): PIXI.Graphics
     {
         options = { ...EngineRenderParameter.DefaultRectangle, ...options }
 
@@ -96,7 +97,7 @@ export default class EngineRender {
         return graphics
     }
 
-    public drawPolygon(options?: EngineRenderParameter.PointArray) : PIXI.Graphics
+    public drawPolygon (options?: EngineRenderParameter.PointArray): PIXI.Graphics
     {
         options = { ...EngineRenderParameter.DefaultPointArray, ...options }
         let graphics: PIXI.Graphics = new PIXI.Graphics()
@@ -114,21 +115,18 @@ export default class EngineRender {
             options.stroke.opacity
         )
         console.log(options)
+        graphics.moveTo(points[0][0], points[0][1])
         for (let i = 0; i < points.length; i++)
         {
             let point = points[i]
-            let pointNext = points[i + 1]
-
-            graphics.moveTo(point[0], point[1])
-            if (pointNext != undefined)
-                graphics.lineTo(pointNext[0], pointNext[1])
+            graphics.lineTo(point[0], point[1])
         }
         graphics.endFill()
 
         return graphics
     }
 
-    public rasterizePoints(rawpoints: number[][]) : number[][]
+    public rasterizePoints (rawpoints: number[][]): number[][]
     {
         // Generate PIXI Points
         let points: any[] = rawpoints.map(r => new PIXI.Point(...r))
@@ -138,42 +136,46 @@ export default class EngineRender {
             x: 0
         }
         // Sort Coordinates T -> B
-        points = points.sort((a, b) => a.y - b.y);
-    
+        points = points.sort((a, b) => a.y - b.y)
+
         // Get center Y-axis
-        center.y = (points[0].y + points[points.length - 1].y) / 2;
-    
+        center.y = (points[0].y + points[points.length - 1].y) / 2
+
         // Sort Coordinates L -> R
-        points = points.sort((a, b) => b.x - a.x);
-    
+        points = points.sort((a, b) => b.x - a.x)
+
         // Get center X-Axis
-        center.x = (points[0].x + points[points.length - 1].x) / 2;
-    
+        center.x = (points[0].x + points[points.length - 1].x) / 2
+
         let startAngle
-        for (let i = 0; i < points.length; i++) {
-            let point = points[i];
-    
-            let angle = Math.atan2(point.y - center.y, point.x - center.x);
-            if (!startAngle) {
+        for (let i = 0; i < points.length; i++)
+        {
+            let point = points[i]
+
+            let angle = Math.atan2(point.y - center.y, point.x - center.x)
+            if (!startAngle)
+            {
                 startAngle = angle
-            } else {
-                if (angle < startAngle) {
-                    angle += Math.PI * 2;
+            } else
+            {
+                if (angle < startAngle)
+                {
+                    angle += Math.PI * 2
                 }
             }
-            point.angle = angle;
+            point.angle = angle
         }
-    
-        points = points.sort((a, b) => a.angle - b.angle);
-    
+
+        points = points.sort((a, b) => a.angle - b.angle)
+
         // Reverse points
-        let reversed = [].concat(points).reverse();
-    
+        let reversed = [].concat(points).reverse()
+
         // Move last point to begining
-        reversed.unshift(reversed.pop());
-    
-        let resultPoints: number[][] = reversed.map(p => [p.x, p.y]);
-    
-        return resultPoints;
+        reversed.unshift(reversed.pop())
+
+        let resultPoints: number[][] = reversed.map(p => [p.x, p.y])
+
+        return resultPoints
     }
 }

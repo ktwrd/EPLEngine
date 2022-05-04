@@ -18,20 +18,20 @@ export interface ISideInteractive
     ResizeableObject: ResizeableObject
     Location?: ESideLocation
     Height?: number
-    getLocationMap(bounds: PIXI.Rectangle, targetHeight: number) : { [key in ESideLocation]?: number[][]; }
-    draw(options: any, bounds: PIXI.Rectangle) : void
+    getLocationMap (bounds: PIXI.Rectangle, targetHeight: number): { [key in ESideLocation]?: number[][] }
+    draw (options: any, bounds: PIXI.Rectangle): void
 
-    onmousedown(event: PIXI.InteractionEvent) : void
-    onmouseup(event: PIXI.InteractionEvent) : void
+    onmousedown (event: PIXI.InteractionEvent): void
+    onmouseup (event: PIXI.InteractionEvent): void
 }
 export default class SideInteractive implements IBaseDrawable, ISideInteractive
 {
-    public constructor(parent: ResizeableObject)
+    public constructor (parent: ResizeableObject)
     {
         this.ResizeableObject = parent
 
         this.Graphics.on('mousedown', (event) => this.onmousedown(event))
-        this.Graphics.on('mouseup',   (event) => this.onmouseup(event))
+        this.Graphics.on('mouseup', (event) => this.onmouseup(event))
     }
 
     public ResizeableObject: ResizeableObject
@@ -40,7 +40,7 @@ export default class SideInteractive implements IBaseDrawable, ISideInteractive
 
     public Height: number = 16
 
-    public getLocationMap(bounds: PIXI.Rectangle, targetHeight: number) : { [key in ESideLocation]?: number[][]; }
+    public getLocationMap (bounds: PIXI.Rectangle, targetHeight: number): { [key in ESideLocation]?: number[][] }
     {
         targetHeight = bounds.height < targetHeight ? bounds.height / 2 : targetHeight
         let _locationMap: [ESideLocation, number[][]][] = [
@@ -83,7 +83,7 @@ export default class SideInteractive implements IBaseDrawable, ISideInteractive
         return Object.fromEntries(_locationMap)
     }
 
-    public draw(options: any=null, bounds: PIXI.Rectangle=new PIXI.Rectangle()) : void
+    public draw (options: any = null, bounds: PIXI.Rectangle = new PIXI.Rectangle()): void
     {
         let targetHeight = bounds.height < this.Height ? bounds.height / 2 : this.Height
         let locationMap = this.getLocationMap(bounds, targetHeight)
@@ -113,11 +113,11 @@ export default class SideInteractive implements IBaseDrawable, ISideInteractive
         this.Graphics.cursor = InteractiveBounds.CursorMap[this.Location]
     }
 
-    public onmousedown(event: PIXI.InteractionEvent) : void
+    public onmousedown (event: PIXI.InteractionEvent): void
     {
         this.ResizeableObject.setSideStatus(this.Location, true)
     }
-    public onmouseup(event: PIXI.InteractionEvent) : void
+    public onmouseup (event: PIXI.InteractionEvent): void
     {
         this.ResizeableObject.setSideStatus(this.Location, false)
     }

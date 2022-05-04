@@ -5,7 +5,7 @@ import DemoBase from './demobase'
 
 export default class LineDrawer extends DemoBase
 {
-    public constructor(engine: Engine, parent: PIXI.Container)
+    public constructor (engine: Engine, parent: PIXI.Container)
     {
         super(engine, parent)
 
@@ -19,7 +19,7 @@ export default class LineDrawer extends DemoBase
 
     public positionBuffer: PIXI.Point[] = []
 
-    public destroy()
+    public destroy ()
     {
         super.destroy()
     }
@@ -27,7 +27,7 @@ export default class LineDrawer extends DemoBase
     private drawMouseLine: boolean = false
     private mouseLine: PIXI.Graphics = null
 
-    public onmousedown(event: PIXI.InteractionEvent) : void
+    public onmousedown (event: PIXI.InteractionEvent): void
     {
         if (this.destroyed) return
         let position: PIXI.Point = JSON.parse(JSON.stringify(event.data.global))
@@ -45,7 +45,7 @@ export default class LineDrawer extends DemoBase
         this.drawMouseLine = true
     }
 
-    public onmouseup(event: PIXI.InteractionEvent) : void
+    public onmouseup (event: PIXI.InteractionEvent): void
     {
         if (this.destroyed) return
         this.mouseLine.clear()
@@ -72,7 +72,7 @@ export default class LineDrawer extends DemoBase
     private mouseLineDrawing: boolean = false
     private mouseMoveOffset: number = 0
 
-    public async onmousemove(event: PIXI.InteractionEvent) : Promise<void>
+    public async onmousemove (event: PIXI.InteractionEvent): Promise<void>
     {
         if (this.destroyed) return
         if (this.mouseMoveOffset < 2)
@@ -104,7 +104,7 @@ export default class LineDrawer extends DemoBase
         this.previousMousePosition = new PIXI.Point(event.data.global.x, event.data.global.y)
     }
 
-    public drawLineGraphics() : void
+    public drawLineGraphics (): void
     {
         if (this.destroyed) return
         let pointArray: number[][] = this.positionBuffer.map(p => [p.x, p.y])
@@ -117,7 +117,7 @@ export default class LineDrawer extends DemoBase
         })
         this.Container.addChild(lineGraphics)
     }
-    public drawBoundingGraphics() : void
+    public drawBoundingGraphics (): void
     {
         if (this.destroyed) return
         let pointArray: number[][] = this.positionBuffer.map(p => [p.x, p.y])
@@ -138,7 +138,7 @@ export default class LineDrawer extends DemoBase
             topleft[0] = pointArray[0][0]
         else
             topleft[0] = pointArray[1][0]
-        
+
         if (pointArray[0][1] < pointArray[1][1])
             topleft[1] = pointArray[0][1]
         else

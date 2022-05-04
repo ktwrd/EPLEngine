@@ -10,7 +10,7 @@ export enum EngineMouseState
 
 export default class EngineMouseOverlay implements IEngineAddon
 {
-    public constructor(engine: Engine)
+    public constructor (engine: Engine)
     {
         this.Engine = engine
 
@@ -29,13 +29,13 @@ export default class EngineMouseOverlay implements IEngineAddon
 
     public enabled: boolean = false
 
-    public enable() : void
+    public enable (): void
     {
         if (this.enabled == true) return
         this.enabled = true
         this.Engine.Application.stage.addChild(this.Container)
     }
-    public disable() : void
+    public disable (): void
     {
         if (this.enabled == false) return
         this.enabled = false
@@ -49,44 +49,44 @@ export default class EngineMouseOverlay implements IEngineAddon
     public AssetText: PIXI.Text = null
 
     private mouseState: EngineMouseState = EngineMouseState.UP
-    get MouseState()
+    get MouseState ()
     {
         return this.mouseState
     }
-    set MouseState(value: EngineMouseState)
+    set MouseState (value: EngineMouseState)
     {
         this.mouseState = value
         this.UpdateText()
     }
 
-    get X()
+    get X ()
     {
         return this.Container.x
     }
-    get Y()
+    get Y ()
     {
         return this.Container.y
     }
 
-    set X(value: number)
+    set X (value: number)
     {
         this.Container.x = value
         this.generateText()
     }
-    set Y(value: number)
+    set Y (value: number)
     {
         this.Container.y = value
         this.generateText()
     }
 
-    private static textTemplate : string[] = 
-    [
-        `X: %s`,    // X Position
-        `Y: %s`,    // Y Position
-        `%s`        // Mouse State
-    ]
+    private static textTemplate: string[] =
+        [
+            `X: %s`,    // X Position
+            `Y: %s`,    // Y Position
+            `%s`        // Mouse State
+        ]
 
-    private generateText() : string
+    private generateText (): string
     {
         let text: string[] = [].concat(EngineMouseOverlay.textTemplate)
 
@@ -97,12 +97,12 @@ export default class EngineMouseOverlay implements IEngineAddon
         return text.join('\n')
     }
 
-    public UpdateText() : void
+    public UpdateText (): void
     {
         this.AssetText.text = this.generateText()
     }
 
-    public onmousemove(event: PIXI.InteractionEvent) : void
+    public onmousemove (event: PIXI.InteractionEvent): void
     {
         if (!this.enabled) return
         this.Container.x = event.data.global.x
@@ -110,11 +110,11 @@ export default class EngineMouseOverlay implements IEngineAddon
         this.UpdateText()
     }
 
-    public onmousedown(event: PIXI.InteractionEvent) : void
+    public onmousedown (event: PIXI.InteractionEvent): void
     {
         this.MouseState = EngineMouseState.DOWN
     }
-    public onmouseup(event: PIXI.InteractionEvent) : void
+    public onmouseup (event: PIXI.InteractionEvent): void
     {
         this.MouseState = EngineMouseState.UP
     }

@@ -23,9 +23,9 @@ export const IStrokeOptionsDefault: IStrokeOptions =
 
 export interface IResizeableObjectStroke
 {
-    create(options: IStrokeOptions, bounds: PIXI.Rectangle) : void
-    draw(options: IStrokeOptions, bounds: PIXI.Rectangle) : void
-    dirtyDraw(bounds: PIXI.Rectangle) : void
+    create (options: IStrokeOptions, bounds: PIXI.Rectangle): void
+    draw (options: IStrokeOptions, bounds: PIXI.Rectangle): void
+    dirtyDraw (bounds: PIXI.Rectangle): void
 
     ResizeableObject: ResizeableObject
     Graphics: PIXI.Graphics
@@ -33,7 +33,7 @@ export interface IResizeableObjectStroke
 }
 export default class ResizeableObjectStroke implements IResizeableObjectStroke, IBaseDrawable
 {
-    public constructor(parent: ResizeableObject)
+    public constructor (parent: ResizeableObject)
     {
         this.ResizeableObject = parent
     }
@@ -42,16 +42,16 @@ export default class ResizeableObjectStroke implements IResizeableObjectStroke, 
     public Graphics: PIXI.Graphics = new PIXI.Graphics()
 
     private options: IStrokeOptions = { ...IStrokeOptionsDefault }
-    get Options() 
+    get Options () 
     {
         return this.options
     }
-    set Options(value: IStrokeOptions)
+    set Options (value: IStrokeOptions)
     {
         this.options = { ...IStrokeOptionsDefault, ...this.options, ...value }
     }
 
-    public create(options: IStrokeOptions, bounds: PIXI.Rectangle=new PIXI.Rectangle()) : void
+    public create (options: IStrokeOptions, bounds: PIXI.Rectangle = new PIXI.Rectangle()): void
     {
         if (this.Graphics == null)
             this.Graphics = new PIXI.Graphics()
@@ -61,9 +61,9 @@ export default class ResizeableObjectStroke implements IResizeableObjectStroke, 
         this.draw(options, bounds)
     }
 
-    public draw(options: IStrokeOptions={}, bounds: PIXI.Rectangle=new PIXI.Rectangle()) : void
+    public draw (options: IStrokeOptions = {}, bounds: PIXI.Rectangle = new PIXI.Rectangle()): void
     {
-        this.Options = {...options, alignment: 0.5}
+        this.Options = { ...options, alignment: 0.5 }
 
         let positions = [
             [0, 0],
@@ -89,7 +89,7 @@ export default class ResizeableObjectStroke implements IResizeableObjectStroke, 
         this.Graphics.y = bounds.y
     }
 
-    public dirtyDraw(bounds: PIXI.Rectangle=new PIXI.Rectangle()) : void
+    public dirtyDraw (bounds: PIXI.Rectangle = new PIXI.Rectangle()): void
     {
         this.Graphics.x = bounds.x
         this.Graphics.y = bounds.y

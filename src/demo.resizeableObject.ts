@@ -5,11 +5,11 @@ import DemoBase from './demobase'
 
 import ResizeableObject from './app.resizeableObject/index'
 
-import {TextureGenerators} from './demo.textureGenerators'
+import { TextureGenerators } from './demo.textureGenerators'
 
 export default class DemoResizeableObject extends DemoBase
 {
-    public constructor(engine: Engine, parent: PIXI.Container)
+    public constructor (engine: Engine, parent: PIXI.Container)
     {
         super(engine, parent)
 
@@ -21,13 +21,13 @@ export default class DemoResizeableObject extends DemoBase
     public Target: PIXI.IDisplayObjectExtended
     public TargetContainer: PIXI.Container
 
-    public async fetchGeneratorImage(index: number, scale: PIXI.Point = new PIXI.Point(1, 1)) : Promise<PIXI.Sprite>
+    public async fetchGeneratorImage (index: number, scale: PIXI.Point = new PIXI.Point(1, 1)): Promise<PIXI.Sprite>
     {
         let item = TextureGenerators[index]()
         item.setTransform()
         let bounds = item.getBounds()
-        let renderTexture = PIXI.RenderTexture.create({ width: bounds.width + bounds.x, height: bounds.height + bounds.y });
-        this.Engine.Application.renderer.render(item, {renderTexture})
+        let renderTexture = PIXI.RenderTexture.create({ width: bounds.width + bounds.x, height: bounds.height + bounds.y })
+        this.Engine.Application.renderer.render(item, { renderTexture })
 
         let sprite = new PIXI.Sprite(renderTexture)
         sprite.scale.set(scale.x, scale.y)
@@ -36,7 +36,7 @@ export default class DemoResizeableObject extends DemoBase
         return sprite
     }
 
-    public async Initalize() : Promise<void>
+    public async Initalize (): Promise<void>
     {
         this.TargetContainer = new PIXI.Container()
         this.Target = await this.fetchGeneratorImage(0, new PIXI.Point(10, 10))

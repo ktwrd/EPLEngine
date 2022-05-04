@@ -9,18 +9,18 @@ export interface IDemoBase
     Engine: Engine,
     destroyed: boolean,
 
-    destroy() : void
+    destroy (): void
 }
 
 export default class DemoBase extends EventEmitter implements IDemoBase
 {
-    public constructor(engine: Engine, parentContainer: PIXI.Container)
+    public constructor (engine: Engine, parentContainer: PIXI.Container)
     {
         super()
         this.Container = new PIXI.Container()
 
         this.parent = parentContainer
-        this.Engine = engine;
+        this.Engine = engine
 
         this.parent.addChild(this.Container)
     }
@@ -30,7 +30,7 @@ export default class DemoBase extends EventEmitter implements IDemoBase
 
     public destroyed: boolean = false
 
-    public destroy() : void
+    public destroy (): void
     {
         this.parent.removeChild(this.Container)
         this.removeAllListeners()

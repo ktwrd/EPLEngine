@@ -6,18 +6,20 @@ import BaseEngineAddon from './engine.addon.base'
 export type IndexedObject = [PIXI.Graphics?, PIXI.Container?]
 export default class DebugOutlineAddon extends BaseEngineAddon
 {
-    public constructor(engine: Engine)
+    public constructor (engine: Engine)
     {
         super(engine)
         this.walkChildren(this.Engine.Application.stage)
 
         let isPaused = false
-        let updateInterval_f = () => {
+        let updateInterval_f = () =>
+        {
             if (this.enabled && !isPaused)
                 this.update()
         }
         let updateInterval = setInterval(updateInterval_f, 100)
-        setInterval(() => {
+        setInterval(() =>
+        {
             if (this.enabled)
             {
                 isPaused = true
@@ -31,19 +33,19 @@ export default class DebugOutlineAddon extends BaseEngineAddon
 
     public IndexedObjects: IndexedObject[] = []
 
-    public walkChildren(object: PIXI.Container) : void
+    public walkChildren (object: PIXI.Container): void
     {
         if (object == this.Container) return
         for (let i = 0; i < object.children.length; i++)
         {
             let child: any = object.children[i]
             this.IndexedObjects.push(this.initalizeObject(child))
-            if (child.children != undefined && child.children .length > 0)
+            if (child.children != undefined && child.children.length > 0)
                 this.walkChildren(child)
         }
     }
 
-    public update() : void
+    public update (): void
     {
         for (let i = 0; i < this.IndexedObjects.length; i++)
         {
@@ -56,7 +58,7 @@ export default class DebugOutlineAddon extends BaseEngineAddon
         }
     }
 
-    public initalizeObject(object: PIXI.Container) : IndexedObject
+    public initalizeObject (object: PIXI.Container): IndexedObject
     {
         let result: IndexedObject = [null, null]
 
@@ -65,7 +67,7 @@ export default class DebugOutlineAddon extends BaseEngineAddon
         let globalPosition = object.getGlobalPosition()
         let gfx = new PIXI.Graphics()
         gfx.lineStyle(1, 0xff0000, 1, 0, true)
-        gfx.drawRect(0 ,0, bounds.width, bounds.height)
+        gfx.drawRect(0, 0, bounds.width, bounds.height)
         gfx.x = globalPosition.x
         gfx.y = globalPosition.y
         result[0] = gfx
@@ -74,7 +76,7 @@ export default class DebugOutlineAddon extends BaseEngineAddon
         return result
     }
 
-    public clean() : void
+    public clean (): void
     {
         for (let i = 0; i < this.IndexedObjects.length; i++)
         {
@@ -84,7 +86,7 @@ export default class DebugOutlineAddon extends BaseEngineAddon
         this.IndexedObjects = []
     }
 
-    public enable() : void
+    public enable (): void
     {
         super.enable()
         if (!this.enabled) return
@@ -92,7 +94,7 @@ export default class DebugOutlineAddon extends BaseEngineAddon
         this.walkChildren(this.Engine.Application.stage)
         this.update()
     }
-    public disable() : void
+    public disable (): void
     {
         super.disable()
         if (this.enabled) return

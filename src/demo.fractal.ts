@@ -3,7 +3,7 @@ import * as PIXI from 'pixi.js'
 import Engine from './engine'
 import DemoBase from './demobase'
 
-function fx(a: number, x: number): number
+function fx (a: number, x: number): number
 {
     const x2 = x * x
     const top = 2 * (1 - a) * x2
@@ -40,7 +40,7 @@ export interface IMiraYield
     point: IMiraYieldPoint
 }
 
-function* mira(params: IMiraParams): Generator<IMiraYield>
+function* mira (params: IMiraParams): Generator<IMiraYield>
 {
     params = { ...IMiraParamsDefault, ...params }
 
@@ -51,22 +51,22 @@ function* mira(params: IMiraParams): Generator<IMiraYield>
     {
         let previousX = xn
 
-        xn = params.b * yn + fx(params.a, previousX);
-        yn = -previousX + fx(params.a, xn);
+        xn = params.b * yn + fx(params.a, previousX)
+        yn = -previousX + fx(params.a, xn)
 
         yield {
             current: i,
             point: {
                 x: xn * params.scale,
-                y: yn * params.scale 
+                y: yn * params.scale
             }
-        };
+        }
     }
 }
 
 export default class FractalDemo extends DemoBase
 {
-    public constructor(engine: Engine, parent: PIXI.Container)
+    public constructor (engine: Engine, parent: PIXI.Container)
     {
         super(engine, parent)
         this.run()
@@ -77,7 +77,7 @@ export default class FractalDemo extends DemoBase
 
     public Graphics: PIXI.Graphics = new PIXI.Graphics()
 
-    public run() : void
+    public run (): void
     {
         this.miraGeneratorConfig = {
             a: -0.41,
@@ -105,7 +105,7 @@ export default class FractalDemo extends DemoBase
 
     public iterationIndex: number = 0
 
-    public draw() : void
+    public draw (): void
     {
         let n = this.miraGenerator.next()
         let v: IMiraYield = n.value

@@ -14,25 +14,25 @@ export interface IResizeableObject
     TargetContainer: PIXI.Container
     WidgetContainer: PIXI.Container
 
-    widgetVisibility(alpha: number) : void
+    widgetVisibility (alpha: number): void
 
-    setTarget(target: PIXI.IDisplayObjectExtended) : void
+    setTarget (target: PIXI.IDisplayObjectExtended): void
 
-    draw(bounds: PIXI.Rectangle) : void
+    draw (bounds: PIXI.Rectangle): void
 
-    onmouseup(event: PIXI.InteractionEvent) : void
-    onmousedown(event: PIXI.InteractionEvent) : void
-    onmousemove(event: PIXI.InteractionEvent) : void
+    onmouseup (event: PIXI.InteractionEvent): void
+    onmousedown (event: PIXI.InteractionEvent): void
+    onmousemove (event: PIXI.InteractionEvent): void
 
     sideHeight: number,
     sideInstances: SideInteractive[]
     SideStatus: { [key in ESideLocation]?: boolean }
 
-    setSideStatus(side: ESideLocation, status: boolean) : void
-    declaredown(side: ESideLocation) : void
+    setSideStatus (side: ESideLocation, status: boolean): void
+    declaredown (side: ESideLocation): void
 
-    fetchCalculatedBounds(snapshot: IMouseSnapshot) : PIXI.Rectangle
-    calculateBounds() : void
+    fetchCalculatedBounds (snapshot: IMouseSnapshot): PIXI.Rectangle
+    calculateBounds (): void
 }
 
 export interface IStrokeOptions extends PIXI.ILineStyleOptions
@@ -52,7 +52,7 @@ export interface IMouseSnapshot
 
 export default class ResizeableObject extends DemoBase implements IResizeableObject, IDemoBase
 {
-    public constructor(engine: Engine, parent: PIXI.Container)
+    public constructor (engine: Engine, parent: PIXI.Container)
     {
         super(engine, parent)
         this.initalize()
@@ -62,7 +62,7 @@ export default class ResizeableObject extends DemoBase implements IResizeableObj
     public TargetContainer: PIXI.Container = null
     public WidgetContainer: PIXI.Container = null
 
-    private initalize() : void
+    private initalize (): void
     {
         this.Container = new PIXI.Container()
         this.TargetContainer = new PIXI.Container()
@@ -87,7 +87,7 @@ export default class ResizeableObject extends DemoBase implements IResizeableObj
         }
     }
 
-    private initalizeContainer() : void
+    private initalizeContainer (): void
     {
         this.Container.removeChildren()
 
@@ -104,18 +104,18 @@ export default class ResizeableObject extends DemoBase implements IResizeableObj
         this.Engine.Interaction.on('mouse:move', (event) => this.onmousemove(event))
     }
     public strokeOptions: IStrokeOptions =
-    {
-        width: 2,
-        color: 0xffffff,
-        alignment: 1
-    }
+        {
+            width: 2,
+            color: 0xffffff,
+            alignment: 1
+        }
 
-    public widgetVisibility(alpha: number=this.WidgetContainer.alpha) : void
+    public widgetVisibility (alpha: number = this.WidgetContainer.alpha): void
     {
         this.WidgetContainer.alpha = alpha
     }
 
-    public setTarget(target: PIXI.Container) : void
+    public setTarget (target: PIXI.Container): void
     {
         this.Container.x = target.x
         this.Container.y = target.y
@@ -127,9 +127,8 @@ export default class ResizeableObject extends DemoBase implements IResizeableObj
         this.draw()
     }
 
-    public draw(bounds: PIXI.Rectangle=this.TargetContainer.getBounds()) : void
+    public draw (bounds: PIXI.Rectangle = this.TargetContainer.getBounds()): void
     {
-
         console.log(`[app.resizeableObject->draw] bounds (w,h) [${bounds.width}, ${bounds.height}]`)
 
         let strokeBounds = new PIXI.Rectangle(0, 0, bounds.width, bounds.height)
@@ -146,7 +145,7 @@ export default class ResizeableObject extends DemoBase implements IResizeableObj
 
     //- GetterSetter.SideStatus
     private _sideStatus: { [key in ESideLocation]?: boolean } = {}
-    get SideStatus()
+    get SideStatus ()
     {
         if (this._sideStatus[0] == undefined || this._sideStatus[0] == null)
         {
@@ -154,12 +153,12 @@ export default class ResizeableObject extends DemoBase implements IResizeableObj
         }
         return this._sideStatus
     }
-    set SideStatus(value)
+    set SideStatus (value)
     {
         this._sideStatus = value
     }
 
-    public setSideStatus(side: ESideLocation, status: boolean) : void
+    public setSideStatus (side: ESideLocation, status: boolean): void
     {
         console.log(`[app.resizeableObject->setSideStatus] ${ESideLocation[side]}: ${this.SideStatus[side]} -> ${status}`)
         this.SideStatus[side] = status
@@ -169,7 +168,7 @@ export default class ResizeableObject extends DemoBase implements IResizeableObj
         }
     }
 
-    public declaredown(side: ESideLocation) : void
+    public declaredown (side: ESideLocation): void
     {
         this.mouseSnapshot = {
             cursorOffset: new PIXI.Point(
@@ -193,8 +192,9 @@ export default class ResizeableObject extends DemoBase implements IResizeableObj
     private mouseSnapshot: IMouseSnapshot = null
 
     //- Event.Mouse.Up
-    public onmouseup(event: PIXI.InteractionEvent) : void
-    {   if (this.destroyed) return
+    public onmouseup (event: PIXI.InteractionEvent): void
+    {
+        if (this.destroyed) return
         if (this.mouseSnapshot == null) return
         this.mouseSnapshot.cursorPositions[1] = new PIXI.Point(event.data.global.x, event.data.global.y)
         this.mouseSnapshot.timestamps[1] = Date.now()
@@ -215,18 +215,16 @@ export default class ResizeableObject extends DemoBase implements IResizeableObj
         this.mouseSnapshot = null
     }
     //- Event.Mouse.Down
-    public onmousedown(event: PIXI.InteractionEvent) : void
-    {   if (this.destroyed) return
+    public onmousedown (event: PIXI.InteractionEvent): void
+    {
+        if (this.destroyed) return
     }
     //- Event.Mouse.Move
-    public onmousemove(event: PIXI.InteractionEvent) : void
-    {   if (this.destroyed) return
+    public onmousemove (event: PIXI.InteractionEvent): void
+    {
+        if (this.destroyed) return
         if (this.mouseSnapshot != null)
         {
-            let distance = {
-                x: event.data.global.x - this.mouseSnapshot.cursorPositions[0].x,
-                y: event.data.global.y - this.mouseSnapshot.cursorPositions[0].y
-            }
             if (this.mouseSnapshot.location == ESideLocation.NONE)
             {
                 this.Container.x = event.data.global.x - this.mouseSnapshot.cursorOffset.x
@@ -234,7 +232,10 @@ export default class ResizeableObject extends DemoBase implements IResizeableObj
             }
             else
             {
-                let b = this.fetchCalculatedBounds({ ...this.mouseSnapshot, cursorPositions: [this.mouseSnapshot.cursorPositions[0], new PIXI.Point(event.data.global.x, event.data.global.y)]})
+                let b = this.fetchCalculatedBounds({
+                    ...this.mouseSnapshot,
+                    cursorPositions: [this.mouseSnapshot.cursorPositions[0], new PIXI.Point(event.data.global.x, event.data.global.y)]
+                })
                 b.x = this.Container.x == b.x ? 0 : event.data.global.x - this.mouseSnapshot.cursorPositions[0].x
                 b.y = this.Container.y == b.y ? 0 : event.data.global.y - this.mouseSnapshot.cursorPositions[0].y
                 this.stroke.draw({}, b)
@@ -242,7 +243,7 @@ export default class ResizeableObject extends DemoBase implements IResizeableObj
         }
     }
 
-    public fetchCalculatedBounds(snapshot: IMouseSnapshot) : PIXI.Rectangle
+    public fetchCalculatedBounds (snapshot: IMouseSnapshot): PIXI.Rectangle
     {
         let distance = {
             x: snapshot.cursorPositions[1].x - snapshot.cursorPositions[0].x,
@@ -313,7 +314,7 @@ export default class ResizeableObject extends DemoBase implements IResizeableObj
         return proposedBounds
     }
 
-    public calculateBounds() : void
+    public calculateBounds (): void
     {
         if (this.mouseSnapshot == null) return
         let newBounds: PIXI.Rectangle = this.fetchCalculatedBounds(this.mouseSnapshot)
@@ -324,7 +325,7 @@ export default class ResizeableObject extends DemoBase implements IResizeableObj
         if (newBounds.height != this.Container.getBounds().height)
             this.TargetContainer.height = newBounds.height
 
-        
+
         this.draw(newBounds)
         this.draw()
     }

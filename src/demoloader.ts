@@ -11,7 +11,7 @@ import { IDemoBase } from './demobase'
 export interface IRegisteredDemo
 {
     Key: string,
-    Value(engineInstance: Engine, parentContainer: PIXI.Container): IDemoBase
+    Value (engineInstance: Engine, parentContainer: PIXI.Container): IDemoBase
 }
 export interface IDemoLoader
 {
@@ -22,23 +22,23 @@ export interface IDemoLoader
     TargetDemo: IDemoBase
     TargetRegisteredDemo: IRegisteredDemo
 
-    selectDemo(demo: IRegisteredDemo) : void
+    selectDemo (demo: IRegisteredDemo): void
 
     HTMLDemoSelect: HTMLSelectElement
     HTMLButtonStart: HTMLButtonElement
 
-    initalizeHTMLElements() : void
-    initalizeHTMLButton() : void
+    initalizeHTMLElements (): void
+    initalizeHTMLButton (): void
 
-    onstart() : void
+    onstart (): void
 
-    getSelectedOption() : IRegisteredDemo
+    getSelectedOption (): IRegisteredDemo
 
-    destroy() : void
+    destroy (): void
 }
 export default class DemoLoader extends EventEmitter implements IDemoLoader
 {
-    public constructor(engine: Engine, selectElement: HTMLSelectElement, startButtonElement: HTMLButtonElement)
+    public constructor (engine: Engine, selectElement: HTMLSelectElement, startButtonElement: HTMLButtonElement)
     {
         super()
         this.Engine = engine
@@ -83,12 +83,12 @@ export default class DemoLoader extends EventEmitter implements IDemoLoader
         }
     ]
 
-    public registerDemo(demo: IRegisteredDemo) : void
+    public registerDemo (demo: IRegisteredDemo): void
     {
         this.RegisteredDemos.push(demo)
         this.initalizeHTMLElements()
     }
-    public registerDemos(demos: IRegisteredDemo[]) : void
+    public registerDemos (demos: IRegisteredDemo[]): void
     {
         this.RegisteredDemos = this.RegisteredDemos.concat(demos)
         this.initalizeHTMLElements()
@@ -98,7 +98,7 @@ export default class DemoLoader extends EventEmitter implements IDemoLoader
     public TargetDemo: IDemoBase = null
     public TargetRegisteredDemo: IRegisteredDemo = null
 
-    public selectDemo(demo: IRegisteredDemo) : void
+    public selectDemo (demo: IRegisteredDemo): void
     {
         if (this.TargetDemo != null)
         {
@@ -110,7 +110,7 @@ export default class DemoLoader extends EventEmitter implements IDemoLoader
     public HTMLDemoSelect: HTMLSelectElement = null
     public HTMLButtonStart: HTMLButtonElement = null
 
-    public initalizeHTMLElements() : void
+    public initalizeHTMLElements (): void
     {
         this.HTMLDemoSelect.innerHTML = `<option value="null" selected>None</option>`
         for (let i = 0; i < this.RegisteredDemos.length; i++)
@@ -118,24 +118,24 @@ export default class DemoLoader extends EventEmitter implements IDemoLoader
             this.HTMLDemoSelect.innerHTML += `<option value="${i}">${this.RegisteredDemos[i].Key}</option>`
         }
     }
-    public initalizeHTMLButton() : void
+    public initalizeHTMLButton (): void
     {
-        this.HTMLButtonStart.onclick = () => {this.emit('start')}
+        this.HTMLButtonStart.onclick = () => { this.emit('start') }
     }
 
-    public onstart() : void
+    public onstart (): void
     {
         let selected = this.getSelectedOption()
         if (this.TargetDemo != null)
             this.TargetDemo.destroy()
         if (selected == null)
             return
-        
+
         this.TargetRegisteredDemo = selected
         this.TargetDemo = this.TargetRegisteredDemo.Value(this.Engine, this.DemoContainer)
     }
 
-    public getSelectedOption() : IRegisteredDemo
+    public getSelectedOption (): IRegisteredDemo
     {
         let selectedItems = this.HTMLDemoSelect.selectedOptions
 
@@ -154,13 +154,13 @@ export default class DemoLoader extends EventEmitter implements IDemoLoader
 
         if (targetItem == null)
             return null
-    
+
 
         return this.RegisteredDemos[parseInt(targetItem)]
     }
 
     protected destroyed: boolean = false
-    public destroy() : void
+    public destroy (): void
     {
         this.Engine.Container.removeChild(this.DemoContainer)
         this.removeAllListeners()
