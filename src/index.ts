@@ -8,7 +8,7 @@ import _DemoBase from './demobase'
 import _DemoLoader from './demoloader'
 import * as _Utilities from './utilities'
 
-import _ResizeableObject from './app.resizeableObject/library'
+import * as _ResizeableObject from './app.resizeableObject/library'
 
 import _Addons from './engine.addons'
 
