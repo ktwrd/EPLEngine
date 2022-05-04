@@ -15,11 +15,6 @@ let btn: HTMLButtonElement = document.querySelector('button[action=start]')
 let sel: HTMLSelectElement = document.querySelector('select#demoselect_input')
 let demoInstance = new DemoLoader(engineInstance, sel, btn)
 
-window.addEventListener('resize', () => {
-    let element: HTMLDivElement = document.querySelector('.engine')
-    engineInstance.setSize(element.clientWidth, element.clientHeight)
-})
-
 function generateEngineAddonList (): void
 {
     let htmlArray = []
