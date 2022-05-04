@@ -11,11 +11,15 @@
         "moduleResolution": "node",
         "sourceMap": true,
         "esModuleInterop": true,
-		"experimentalDecorators": true,
-		"lib": ["ES2021", "DOM"],
-		"target": "ES2021",
-		"useDefineForClassFields": true,
-        "declaration": true
+        "experimentalDecorators": true,
+        "lib": [
+            "ES2021",
+            "DOM"
+        ],
+        "target": "ES2021",
+        "useDefineForClassFields": true,
+        "declaration": true,
+        "resolveJsonModule": true
     },
     "awesomeTypescriptLoaderOptions": {
         /* ... */
