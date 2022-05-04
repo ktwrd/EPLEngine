@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js'
 
-import IBaseDrawable from './baseDrawable'
+import { BaseDrawable, IBaseDrawable } from './baseDrawable'
 import ResizeableObject from './index'
 
 import * as InteractiveBounds from './interactiveBounds'
@@ -13,9 +13,8 @@ export enum ESideLocation
     LEFT,
     RIGHT
 }
-export interface ISideInteractive
+export interface ISideInteractive extends IBaseDrawable
 {
-    ResizeableObject: ResizeableObject
     Location?: ESideLocation
     Height?: number
     getLocationMap (bounds: PIXI.Rectangle, targetHeight: number): { [key in ESideLocation]?: number[][] }
@@ -24,18 +23,17 @@ export interface ISideInteractive
     onmousedown (event: PIXI.InteractionEvent): void
     onmouseup (event: PIXI.InteractionEvent): void
 }
-export default class SideInteractive implements IBaseDrawable, ISideInteractive
+export class SideInteractive extends BaseDrawable implements ISideInteractive
 {
     public constructor (parent: ResizeableObject)
     {
+        super()
         this.ResizeableObject = parent
 
         this.Graphics.on('mousedown', (event) => this.onmousedown(event))
         this.Graphics.on('mouseup', (event) => this.onmouseup(event))
     }
 
-    public ResizeableObject: ResizeableObject
-    public Graphics: PIXI.Graphics = new PIXI.Graphics()
     public Location: ESideLocation = ESideLocation.NONE
 
     public Height: number = 16
@@ -122,3 +120,4 @@ export default class SideInteractive implements IBaseDrawable, ISideInteractive
         this.ResizeableObject.setSideStatus(this.Location, false)
     }
 }
+export default SideInteractive

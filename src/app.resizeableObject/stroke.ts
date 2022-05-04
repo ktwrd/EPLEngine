@@ -31,7 +31,7 @@ export interface IResizeableObjectStroke
     Graphics: PIXI.Graphics
     Options: IStrokeOptions
 }
-export default class ResizeableObjectStroke implements IResizeableObjectStroke, IBaseDrawable
+export class ResizeableObjectStroke implements IResizeableObjectStroke, IBaseDrawable
 {
     public constructor (parent: ResizeableObject)
     {
@@ -97,3 +97,4 @@ export default class ResizeableObjectStroke implements IResizeableObjectStroke, 
         this.Graphics.height = bounds.height
     }
 }
+export default ResizeableObjectStroke

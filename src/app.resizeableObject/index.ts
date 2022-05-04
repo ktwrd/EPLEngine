@@ -3,7 +3,7 @@ import * as PIXI from 'pixi.js'
 import Engine from '../engine'
 import DemoBase, { IDemoBase } from '../demobase'
 
-import ResizeableObjectStroke from './stroke'
+import ResizeableObjectStroke, { IStrokeOptions } from './stroke'
 import SideInteractive, { ESideLocation } from './sideInteractive'
 
 export interface IResizeableObject
@@ -34,12 +34,6 @@ export interface IResizeableObject
     calculateBounds (): void
 }
 
-export interface IStrokeOptions extends PIXI.ILineStyleOptions
-{
-    width: number,
-    color: number
-}
-
 export interface IMouseSnapshot
 {
     cursorOffset: PIXI.Point,
@@ -49,7 +43,7 @@ export interface IMouseSnapshot
     location: ESideLocation,
 }
 
-export default class ResizeableObject extends DemoBase implements IResizeableObject, IDemoBase
+export class ResizeableObject extends DemoBase implements IResizeableObject, IDemoBase
 {
     public constructor (engine: Engine, parent: PIXI.Container)
     {
@@ -323,3 +317,4 @@ export default class ResizeableObject extends DemoBase implements IResizeableObj
         this.draw()
     }
 }
+export default ResizeableObject
