@@ -21,7 +21,6 @@ export interface IResizeableObject
     draw (bounds: PIXI.Rectangle): void
 
     onmouseup (event: PIXI.InteractionEvent): void
-    onmousedown (event: PIXI.InteractionEvent): void
     onmousemove (event: PIXI.InteractionEvent): void
 
     sideHeight: number,
@@ -100,7 +99,6 @@ export default class ResizeableObject extends DemoBase implements IResizeableObj
         this.WidgetContainer.alpha = 0
 
         this.Engine.Interaction.on('mouse:up', (event) => this.onmouseup(event))
-        this.Engine.Interaction.on('mouse:down', (event) => this.onmousedown(event))
         this.Engine.Interaction.on('mouse:move', (event) => this.onmousemove(event))
     }
     public strokeOptions: IStrokeOptions =
@@ -213,11 +211,6 @@ export default class ResizeableObject extends DemoBase implements IResizeableObj
         this.calculateBounds()
 
         this.mouseSnapshot = null
-    }
-    //- Event.Mouse.Down
-    public onmousedown (event: PIXI.InteractionEvent): void
-    {
-        if (this.destroyed) return
     }
     //- Event.Mouse.Move
     public onmousemove (event: PIXI.InteractionEvent): void
