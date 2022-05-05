@@ -6,6 +6,7 @@
     "scripts": {
         "watch": "npm run watch:cjs",
         "watch:cjs": "tsc --watch",
+        "prebuild": "node prebuild.js",
         "build": "npm run build:all",
         "build:all": "npm run build:cjs",
         "build:cjs": "tsc",
