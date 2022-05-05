@@ -96,7 +96,8 @@ export default class Engine extends EventEmitter
         this.Application = new PIXI.Application(this.options)
         this.HTMLElement.appendChild(this.Application.view)
         this.Application.stage.interactive = true
-        this.Container = new PIXI.Container()
+        if (this.Container == null)
+            this.Container = new PIXI.Container()
 
         this.Container.interactive = true
         this.Application.stage.addChild(this.Container)
