@@ -8,7 +8,6 @@
         "watch": "tsc --watch",
         "watch:cjs": "tsc --watch -p tsconfig.cjs.json",
         "build": "tsc && tsc -p tsconfig.cjs.json",
-        "serve:demo": "webpack serve --config webpack.demo.js",
         "postinstall": "npm run build"
     },
     "author": "Kate Ward <kate@dariox.club>",
