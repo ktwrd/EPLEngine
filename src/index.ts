@@ -12,6 +12,8 @@ import * as _ResizeableObject from './app.resizeableObject/library'
 
 import * as _Addons from './engine.addons'
 
+import * as _PACKAGE from './_PACKAGE'
+
 // import _LICENSE from '../LICENSE.txt'
 
 //- Engine
@@ -43,5 +45,8 @@ export const ResizeableObject = _ResizeableObject
 
 export const Utilities = _Utilities
 export type Utilities = _Utilities
+
+export const PACKAGE = _PACKAGE.PackageInfo
+export type PACKAGE = _PACKAGE.IPackageInfo
 
 // export const LICENSE = _LICENSE
