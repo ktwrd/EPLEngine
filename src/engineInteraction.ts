@@ -15,16 +15,13 @@ export default class EngineInteraction extends EventEmitter
         this.Engine.Application.view.addEventListener('mousedown', () => this.emit('mouse:down', this.MousePosition))
         this.Engine.Application.view.addEventListener('mouseup', () => this.emit('mouse:up', this.MousePosition))
 
-        this.Engine.Application.stage.on('mousemove', (event: PIXI.InteractionEvent) => this.MousePosition = event)
+        this.Engine.Application.stage.on('mousemove', (event: PIXI.InteractionEvent) => {this.MousePosition = event; this.emit('mouse:move', this.MousePosition)})
     }
 
     public MousePosition: PIXI.InteractionEvent
     public enableEmit: boolean = true
 
     public AliasedEvents = {
-        'mousemove': 'mouse:move',
-        'mousedown': 'mouse:down',
-        'mouseup': 'mouse:up',
         'mousecontext': 'mouse:context'
     }
 
