@@ -7,6 +7,8 @@ import EngineMouseOverlay from './engineMouseOverlay'
 import ExampleAddon from './engine.addon.example'
 import DebugOutlineAddon from './engine.addon.debugOutline'
 
+import { PACKAGE } from './index'
+
 export interface IEngineAddon
 {
     enabled: boolean,
@@ -56,6 +58,20 @@ export default class Engine extends EventEmitter
         initalize: boolean = true)
     {
         super()
+        if (navigator.userAgent.toLowerCase().indexOf('chrome') > -1)
+        {
+            console.log(`\n %c %c %c EPLEngine v${PACKAGE.version} by ${PACKAGE.author} made with 💞 %c %c %c\n`,
+                `background: #ff66a5; padding:5px 0;`,
+                `background: #ff66a5; padding:5px 0;`,
+                `color: #ff66a5; background: #030307; padding:5px 0;`,
+                `background: #ff66a5; padding:5px 0;`,
+                `background: #ff66a5; padding:5px 0;`,
+                `background: #ff66a5; padding:5px 0;`,)
+        }
+        else if (console)
+        {
+            console.log(`EPLEngine v${PACKAGE.version} by ${PACKAGE.author} made with 💞`)
+        }
         if (targetElement != null)
             this.HTMLElement = targetElement
         this.options = applicationOptions
