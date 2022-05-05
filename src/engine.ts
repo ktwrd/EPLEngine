@@ -52,13 +52,15 @@ export default class Engine extends EventEmitter
 {
     public constructor (
         applicationOptions: PIXI.IApplicationOptions = {},
-        targetElement?: HTMLElement)
+        targetElement?: HTMLElement,
+        initalize: boolean = true)
     {
         super()
         if (targetElement != null)
             this.HTMLElement = targetElement
         this.options = applicationOptions
-        this.initalize()
+        if (initalize)
+            this.initalize()
     }
 
     private options: PIXI.IApplicationOptions = {}
