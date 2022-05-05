@@ -53,6 +53,7 @@ export class DebugOutlineAddon extends BaseEngineAddon
             let pos = obj[1].getGlobalPosition()
             obj[0].width = obj[1].width
             obj[0].height = obj[1].height
+            obj[0].scale = obj[1].scale
             obj[0].x = pos.x
             obj[0].y = pos.y
         }
@@ -70,6 +71,7 @@ export class DebugOutlineAddon extends BaseEngineAddon
         gfx.drawRect(0, 0, bounds.width, bounds.height)
         gfx.x = globalPosition.x
         gfx.y = globalPosition.y
+        gfx.scale = object.scale
         result[0] = gfx
         this.Container.addChild(result[0])
 
