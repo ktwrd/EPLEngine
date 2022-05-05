@@ -9,7 +9,7 @@
         "build": "npm run build:all",
         "build:all": "npm run build:cjs",
         "build:cjs": "tsc",
-        "prepublish": "npm run build:all"
+        "prepack": "npm run build:all"
     },
     "author": "Kate Ward <kate@dariox.club>",
     "license": "AGPL-3.0",
