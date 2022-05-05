@@ -12,12 +12,11 @@ export class DebugOutlineAddon extends BaseEngineAddon
         this.walkChildren(this.Engine.Application.stage)
 
         let isPaused = false
-        let updateInterval_f = () =>
+        let updateInterval = setInterval(() =>
         {
             if (this.enabled && !isPaused)
                 this.update()
-        }
-        let updateInterval = setInterval(updateInterval_f, 100)
+        }, 100)
         setInterval(() =>
         {
             if (this.enabled)
