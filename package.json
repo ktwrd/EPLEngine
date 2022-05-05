@@ -7,8 +7,12 @@
     "scripts": {
         "watch": "tsc --watch",
         "watch:cjs": "tsc --watch -p tsconfig.cjs.json",
-        "build": "tsc && tsc -p tsconfig.cjs.json",
-        "postinstall": "npm run build"
+        "build": "npm run build:all",
+        "build:all": "npm run build:esm && npm run build:cjs",
+        "build:esm": "tsc",
+        "build:cjs": "tsc -p tsconfig.cjs.json",
+        "prepare": "npm run build:all",
+        "prepublish": "npm run build:all"
     },
     "author": "Kate Ward <kate@dariox.club>",
     "license": "AGPL-3.0",
