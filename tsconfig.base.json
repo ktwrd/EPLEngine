@@ -3,7 +3,7 @@
         "src/**/*"
     ],
     "compilerOptions": {
-        "outDir": "./esm",
+        "outDir": "./dist",
         "rootDir": "./src",
         "noImplicitAny": true,
         "inlineSources": false,
@@ -20,8 +20,5 @@
         "useDefineForClassFields": true,
         "declaration": true,
         "resolveJsonModule": true
-    },
-    "awesomeTypescriptLoaderOptions": {
-        /* ... */
     }
 }
