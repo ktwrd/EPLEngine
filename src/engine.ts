@@ -7,6 +7,8 @@ import EngineMouseOverlay from './engineMouseOverlay'
 import ExampleAddon from './engine.addon.example'
 import DebugOutlineAddon from './engine.addon.debugOutline'
 
+import * as PIXIV from 'pixi-viewport'
+
 import { PACKAGE } from './index'
 
 export interface IEngineAddon
