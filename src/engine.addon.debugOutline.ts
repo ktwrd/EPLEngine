@@ -16,7 +16,7 @@ export class DebugOutlineAddon extends BaseEngineAddon
         {
             if (this.enabled && !isPaused)
                 this.update()
-        }, 100)
+        }, 1000/24)
         setInterval(() =>
         {
             if (this.enabled)
@@ -26,7 +26,7 @@ export class DebugOutlineAddon extends BaseEngineAddon
                 this.walkChildren(this.Engine.Application.stage)
                 isPaused = false
             }
-        }, 1000)
+        }, 3000)
 
     }
 
