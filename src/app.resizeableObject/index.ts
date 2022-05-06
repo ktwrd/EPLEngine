@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js'
 
 import Engine from '../engine'
 import DemoBase, { IDemoBase } from '../demobase'
+import { EventEmitter } from 'events'
 
 import ResizeableObjectStroke, { IStrokeOptions } from './stroke'
 import SideInteractive, { ESideLocation } from './sideInteractive'
@@ -162,13 +163,14 @@ export class ResizeableObject extends DemoBase implements IResizeableObject, IDe
 
     public declaredown (side: ESideLocation): void
     {
+        let mpos = this.Engine.Interaction.MousePosition
         this.mouseSnapshot = {
             cursorOffset: new PIXI.Point(
-                this.Engine.Interaction.MousePosition.data.global.x - this.Container.x,
-                this.Engine.Interaction.MousePosition.data.global.y - this.Container.y
+                mpos.x - this.Container.x,
+                mpos.y - this.Container.y
             ),
             cursorPositions: [
-                new PIXI.Point(this.Engine.Interaction.MousePosition.data.global.x, this.Engine.Interaction.MousePosition.data.global.y),
+                new PIXI.Point(mpos.x, mpos.y),
                 null
             ],
             timestamps: [
@@ -179,6 +181,7 @@ export class ResizeableObject extends DemoBase implements IResizeableObject, IDe
             location: side
         }
         console.log(`[app.resizeableObject->declaredown] pos: { [${this.mouseSnapshot.cursorPositions[0].x}, ${this.mouseSnapshot.cursorPositions[0].y}], null } ts: { ${this.mouseSnapshot.timestamps[0]}, null }, sd: ${ESideLocation[this.mouseSnapshot.location]}`)
+        this.emit('down', this)
     }
 
     private mouseSnapshot: IMouseSnapshot = null
@@ -188,7 +191,8 @@ export class ResizeableObject extends DemoBase implements IResizeableObject, IDe
     {
         if (this.destroyed) return
         if (this.mouseSnapshot == null) return
-        this.mouseSnapshot.cursorPositions[1] = new PIXI.Point(event.data.global.x, event.data.global.y)
+        let pos = this.Engine.Interaction.MousePosition
+        this.mouseSnapshot.cursorPositions[1] = new PIXI.Point(pos.x, pos.y)
         this.mouseSnapshot.timestamps[1] = Date.now()
 
         let distance = {
@@ -203,28 +207,29 @@ export class ResizeableObject extends DemoBase implements IResizeableObject, IDe
             this.Container.y -= this.stroke.Graphics.y
 
         this.calculateBounds()
-
+        this.emit('up', this)
         this.mouseSnapshot = null
     }
     //- Event.Mouse.Move
     public onmousemove (event: PIXI.InteractionEvent): void
     {
         if (this.destroyed) return
+        let pos = this.Engine.Interaction.MousePosition
         if (this.mouseSnapshot != null)
         {
             if (this.mouseSnapshot.location == ESideLocation.NONE)
             {
-                this.Container.x = event.data.global.x - this.mouseSnapshot.cursorOffset.x
-                this.Container.y = event.data.global.y - this.mouseSnapshot.cursorOffset.y
+                this.Container.x = pos.x - this.mouseSnapshot.cursorOffset.x
+                this.Container.y = pos.y - this.mouseSnapshot.cursorOffset.y
             }
             else
             {
                 let b = this.fetchCalculatedBounds({
                     ...this.mouseSnapshot,
-                    cursorPositions: [this.mouseSnapshot.cursorPositions[0], new PIXI.Point(event.data.global.x, event.data.global.y)]
+                    cursorPositions: [this.mouseSnapshot.cursorPositions[0], new PIXI.Point(pos.x, pos.y)]
                 })
-                b.x = this.Container.x == b.x ? 0 : event.data.global.x - this.mouseSnapshot.cursorPositions[0].x
-                b.y = this.Container.y == b.y ? 0 : event.data.global.y - this.mouseSnapshot.cursorPositions[0].y
+                b.x = this.Container.x == b.x ? b.x : pos.x - this.mouseSnapshot.cursorPositions[0].x
+                b.y = this.Container.y == b.y ? b.y : pos.y - this.mouseSnapshot.cursorPositions[0].y
                 this.stroke.draw({}, b)
             }
         }
@@ -238,8 +243,8 @@ export class ResizeableObject extends DemoBase implements IResizeableObject, IDe
         }
         let bounds = this.TargetContainer.getBounds()
         let proposedBounds = new PIXI.Rectangle(
-            this.Container.getBounds().x,
-            this.Container.getBounds().y,
+            this.Container.x,
+            this.Container.y,
             this.TargetContainer.getBounds().width,
             this.TargetContainer.getBounds().height)
         switch (snapshot.location)
@@ -311,7 +316,6 @@ export class ResizeableObject extends DemoBase implements IResizeableObject, IDe
             this.TargetContainer.width = newBounds.width
         if (newBounds.height != this.Container.getBounds().height)
             this.TargetContainer.height = newBounds.height
-
 
         this.draw(newBounds)
         this.draw()
