@@ -31,7 +31,7 @@ export interface IEngine
 
     HTMLElement: HTMLElement
     Application: PIXI.Application
-    Container: PIXI.Container
+    Viewport: PIXIV.Viewport
 
     Render: EngineRender
     Interaction: EngineInteraction
@@ -83,7 +83,7 @@ export default class Engine extends EventEmitter
 
     public HTMLElement: HTMLElement = null
     public Application: PIXI.Application = null
-    public Container: PIXI.Container = null
+    public Viewport: PIXIV.Viewport = null
 
     public Render: EngineRender = null
     public Interaction: EngineInteraction = null
