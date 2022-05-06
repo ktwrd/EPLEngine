@@ -103,15 +103,6 @@ export default class Engine extends EventEmitter
 
     public initalize (): void
     {
-        if (this.Application != null)
-        {
-            this.HTMLElement.removeChild(this.Application.view)
-            this.destroy()
-        }
-
-        this.Application = new PIXI.Application(this.options)
-        this.HTMLElement.appendChild(this.Application.view)
-        this.Application.stage.interactive = true
         if (this.Container == null)
             this.Container = new PIXI.Container()
 
@@ -123,6 +114,19 @@ export default class Engine extends EventEmitter
         this.registerAddon('cursorPositionOverlay', new EngineMouseOverlay(this))
         this.registerAddon('example', new ExampleAddon(this))
         this.registerAddon('debugOutline', new DebugOutlineAddon(this))
+    }
+
+    public createApplication (): void
+    {
+        if (this.Application != null)
+        {
+            this.HTMLElement.removeChild(this.Application.view)
+            this.destroy()
+        }
+
+        this.Application = new PIXI.Application(this.options)
+        this.HTMLElement.appendChild(this.Application.view)
+        this.Application.stage.interactive = true
     }
 
     public beforeDestroy (): void
