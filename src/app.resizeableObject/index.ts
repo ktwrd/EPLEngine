@@ -9,6 +9,8 @@ import SideInteractive, { ESideLocation } from './sideInteractive'
 
 export interface IResizeableObject
 {
+    destroy(): void
+
     stroke: ResizeableObjectStroke
     strokeOptions: IStrokeOptions
 
@@ -56,8 +58,15 @@ export class ResizeableObject extends DemoBase implements IResizeableObject, IDe
     public TargetContainer: PIXI.Container = null
     public WidgetContainer: PIXI.Container = null
 
+    public override destroy(): void {
+        this.destroyed = true
+        this.removeAllListeners()
+        super.destroy()
+    }
+
     private initalize (): void
     {
+        if (this.destroyed) return
         this.Container = new PIXI.Container()
         this.TargetContainer = new PIXI.Container()
         this.WidgetContainer = new PIXI.Container()
@@ -83,6 +92,7 @@ export class ResizeableObject extends DemoBase implements IResizeableObject, IDe
 
     private initalizeContainer (): void
     {
+        if (this.destroyed) return
         this.Container.removeChildren()
 
         this.stroke.create(this.strokeOptions)
@@ -105,11 +115,13 @@ export class ResizeableObject extends DemoBase implements IResizeableObject, IDe
 
     public widgetVisibility (alpha: number = this.WidgetContainer.alpha): void
     {
+        if (this.destroyed) return
         this.WidgetContainer.alpha = alpha
     }
 
     public setTarget (target: PIXI.Container): void
     {
+        if (this.destroyed) return
         this.Container.x = target.x
         this.Container.y = target.y
         target.x = 0
@@ -122,6 +134,7 @@ export class ResizeableObject extends DemoBase implements IResizeableObject, IDe
 
     public draw (bounds: PIXI.Rectangle = this.TargetContainer.getBounds()): void
     {
+        if (this.destroyed) return
         console.log(`[app.resizeableObject->draw] bounds (w,h) [${bounds.width}, ${bounds.height}]`)
 
         let strokeBounds = new PIXI.Rectangle(0, 0, bounds.width, bounds.height)
@@ -153,6 +166,7 @@ export class ResizeableObject extends DemoBase implements IResizeableObject, IDe
 
     public setSideStatus (side: ESideLocation, status: boolean): void
     {
+        if (this.destroyed) return
         console.log(`[app.resizeableObject->setSideStatus] ${ESideLocation[side]}: ${this.SideStatus[side]} -> ${status}`)
         this.SideStatus[side] = status
         if (status)
@@ -163,6 +177,7 @@ export class ResizeableObject extends DemoBase implements IResizeableObject, IDe
 
     public declaredown (side: ESideLocation): void
     {
+        if (this.destroyed) return
         let mpos = this.Engine.Interaction.MousePosition
         this.mouseSnapshot = {
             cursorOffset: new PIXI.Point(
@@ -237,6 +252,7 @@ export class ResizeableObject extends DemoBase implements IResizeableObject, IDe
 
     public fetchCalculatedBounds (snapshot: IMouseSnapshot): PIXI.Rectangle
     {
+        if (this.destroyed) return null
         let distance = {
             x: snapshot.cursorPositions[1].x - snapshot.cursorPositions[0].x,
             y: snapshot.cursorPositions[1].y - snapshot.cursorPositions[0].y
@@ -308,6 +324,7 @@ export class ResizeableObject extends DemoBase implements IResizeableObject, IDe
 
     public calculateBounds (): void
     {
+        if (this.destroyed) return
         if (this.mouseSnapshot == null) return
         let newBounds: PIXI.Rectangle = this.fetchCalculatedBounds(this.mouseSnapshot)
         this.Container.x = newBounds.x
