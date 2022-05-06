@@ -55,7 +55,8 @@ export default class Engine extends EventEmitter
     public constructor (
         applicationOptions: PIXI.IApplicationOptions = {},
         targetElement?: HTMLElement,
-        initalize: boolean = true)
+        initalize: boolean = true,
+        createApplication: boolean = true)
     {
         super()
         if (navigator.userAgent.toLowerCase().indexOf('chrome') > -1)
@@ -75,8 +76,11 @@ export default class Engine extends EventEmitter
         if (targetElement != null)
             this.HTMLElement = targetElement
         this.options = applicationOptions
-        if (initalize)
-            this.initalize()
+        if (createApplication)
+            this.createApplication()
+        else
+            if (initalize)
+                this.initalize()
     }
 
     private options: PIXI.IApplicationOptions = {}
@@ -103,6 +107,28 @@ export default class Engine extends EventEmitter
 
     public initalize (): void
     {
+        if (this.Application == null)
+            this.createApplication()
+
+        this.Viewport = new PIXIV.Viewport({
+            screenHeight: this.Application.screen.height,
+            screenWidth: this.Application.screen.width,
+            worldWidth: 1024,
+            worldHeight: 1024
+        })
+
+        this.Viewport.interactive = true
+        this.Application.stage.removeChildren()
+        this.Application.stage.addChild(this.Viewport)
+
+        this.Render = new EngineRender(this)
+        this.Interaction = new EngineInteraction(this, this.EnableInteraction)
+        this.registerAddon('cursorPositionOverlay', new EngineMouseOverlay(this))
+        this.registerAddon('example', new ExampleAddon(this))
+        this.registerAddon('debugOutline', new DebugOutlineAddon(this))
+    }
+    public createApplication (): void
+    {
         if (this.Application != null)
         {
             this.HTMLElement.removeChild(this.Application.view)
@@ -112,17 +138,6 @@ export default class Engine extends EventEmitter
         this.Application = new PIXI.Application(this.options)
         this.HTMLElement.appendChild(this.Application.view)
         this.Application.stage.interactive = true
-        if (this.Container == null)
-            this.Container = new PIXI.Container()
-
-        this.Container.interactive = true
-        this.Application.stage.addChild(this.Container)
-
-        this.Render = new EngineRender(this)
-        this.Interaction = new EngineInteraction(this, this.EnableInteraction)
-        this.registerAddon('cursorPositionOverlay', new EngineMouseOverlay(this))
-        this.registerAddon('example', new ExampleAddon(this))
-        this.registerAddon('debugOutline', new DebugOutlineAddon(this))
     }
 
     public beforeDestroy (): void
