@@ -9,7 +9,7 @@ export class DebugOutlineAddon extends BaseEngineAddon
     public constructor (engine: Engine)
     {
         super(engine)
-        this.walkChildren(this.Engine.Application.stage)
+        this.walkChildren(this.Engine.Viewport)
 
         let isPaused = false
         let updateInterval = setInterval(() =>
@@ -23,18 +23,48 @@ export class DebugOutlineAddon extends BaseEngineAddon
             {
                 isPaused = true
                 this.clean()
-                this.walkChildren(this.Engine.Application.stage)
+                this.walkChildren(s)
                 isPaused = false
             }
         }, 1000)
 
+        this.generateAxisOverlay()
+        this.Container.addChild(this.AxisOverlay)
+
     }
 
     public IndexedObjects: IndexedObject[] = []
+    public AxisOverlay: PIXI.Container = new PIXI.Container()
+
+    public generateAxisOverlay (): void
+    {
+        this.AxisOverlay.removeChildren()
+
+        let width = 10
+
+        let gfx = new PIXI.Graphics()
+        gfx.lineStyle(width, 0x00ff00, 1, 0.5, false)
+        gfx.lineTo(1000, 0)
+
+        gfx.lineStyle(width, 0xff0000, 1, 0.5, false)
+        gfx.lineTo(0, 1000)
+        
+        gfx.lineStyle(width, 0xffff00, 1, 0.5, false)
+        gfx.lineTo(1000, 1000)
+
+        gfx.x = 0
+        gfx.y = 0
+        this.AxisOverlay.x = 0
+        this.AxisOverlay.y = 0
+
+        this.AxisOverlay.addChild(gfx)
+    }
+
 
     public walkChildren (object: PIXI.Container): void
     {
         if (object == this.Container) return
+        if (object == this.AxisOverlay) return
         for (let i = 0; i < object.children.length; i++)
         {
             let child: any = object.children[i]
@@ -49,7 +79,7 @@ export class DebugOutlineAddon extends BaseEngineAddon
         for (let i = 0; i < this.IndexedObjects.length; i++)
         {
             let obj = this.IndexedObjects[i]
-            let pos = obj[1].getGlobalPosition()
+            let pos = obj[1].toGlobal(this.Engine.Viewport.position)
             obj[0].width = obj[1].width
             obj[0].height = obj[1].height
             obj[0].scale = obj[1].scale
@@ -64,7 +94,7 @@ export class DebugOutlineAddon extends BaseEngineAddon
 
         result[1] = object
         let bounds = object.getBounds()
-        let globalPosition = object.getGlobalPosition()
+        let globalPosition = object.toGlobal(this.Engine.Viewport.position)
         let gfx = new PIXI.Graphics()
         gfx.lineStyle(1, 0xff0000, 1, 0, true)
         gfx.drawRect(0, 0, bounds.width, bounds.height)
@@ -92,7 +122,7 @@ export class DebugOutlineAddon extends BaseEngineAddon
         super.enable()
         if (!this.enabled) return
         this.clean()
-        this.walkChildren(this.Engine.Application.stage)
+        this.walkChildren(this.Engine.Viewport)
         this.update()
     }
     public disable (): void
