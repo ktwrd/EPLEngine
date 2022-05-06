@@ -55,7 +55,8 @@ export default class Engine extends EventEmitter
     public constructor (
         applicationOptions: PIXI.IApplicationOptions = {},
         targetElement?: HTMLElement,
-        initalize: boolean = true)
+        initalize: boolean = true,
+        createApplication: boolean = true)
     {
         super()
         if (navigator.userAgent.toLowerCase().indexOf('chrome') > -1)
@@ -75,6 +76,8 @@ export default class Engine extends EventEmitter
         if (targetElement != null)
             this.HTMLElement = targetElement
         this.options = applicationOptions
+        if (createApplication)
+            this.createApplication()
         if (initalize)
             this.initalize()
     }
