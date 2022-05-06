@@ -100,7 +100,7 @@ export class ResizeableObject extends DemoBase implements IResizeableObject, IDe
         {
             width: 2,
             color: 0xffffff,
-            alignment: 1
+            alignment: 0
         }
 
     public widgetVisibility (alpha: number = this.WidgetContainer.alpha): void
@@ -300,8 +300,8 @@ export class ResizeableObject extends DemoBase implements IResizeableObject, IDe
         }
         else
         {
-            proposedBounds.y = proposedBounds.y + 0.5
-            proposedBounds.x = proposedBounds.x + 0.5
+            proposedBounds.y = proposedBounds.y - 0.5
+            proposedBounds.x = proposedBounds.x - 0.5
         }
         return proposedBounds
     }
