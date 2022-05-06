@@ -17,14 +17,15 @@ export class BaseEngineAddon implements IEngineAddon
     {
         if (this.enabled) return
         this.enabled = true
-        this.Engine.Application.stage.addChild(this.Container)
+        
+        this.Engine.Viewport.addChild(this.Container)
     }
     public disable (): void
     {
         if (!this.enabled) return
         this.enabled = false
 
-        this.Engine.Application.stage.removeChild(this.Container)
+        this.Engine.Viewport.removeChild(this.Container)
     }
 }
 export default BaseEngineAddon
