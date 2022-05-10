@@ -8,8 +8,8 @@ export interface IPackageInfo
 }
 export const PackageInfo: IPackageInfo = {
     name: "eplengine",
-    version: "1.0.7",
+    version: "1.0.9",
     author: "Kate Ward <kate@dariox.club>",
     license: "AGPL-3.0",
-    _buildtimestamp: 1652154224219
+    _buildtimestamp: 1652162621535
 }
