@@ -243,8 +243,10 @@ export class ResizeableObject extends DemoBase implements IResizeableObject, IDe
                     ...this.mouseSnapshot,
                     cursorPositions: [this.mouseSnapshot.cursorPositions[0], new PIXI.Point(pos.x, pos.y)]
                 })
-                b.x = this.Container.x == b.x ? b.x : pos.x - this.mouseSnapshot.cursorPositions[0].x
-                b.y = this.Container.y == b.y ? b.y : pos.y - this.mouseSnapshot.cursorPositions[0].y
+                // b.x = this.Container.x == b.x ? b.x : pos.x - this.mouseSnapshot.cursorPositions[0].x
+                // b.y = this.Container.y == b.y ? b.y : pos.y - this.mouseSnapshot.cursorPositions[0].y
+                b.x = 0
+                b.y = 0
                 this.stroke.draw({}, b)
             }
         }
@@ -290,7 +292,7 @@ export class ResizeableObject extends DemoBase implements IResizeableObject, IDe
             proposedBounds.height = this.sideHeight * 2
         let sh_width = proposedBounds.width < this.sideHeight * 2
         let sh_height = proposedBounds.height < this.sideHeight * 2
-
+        console.log(snapshot.location, sh_width, sh_height)
         if (sh_height || sh_width)
         {
             if (sh_height)
