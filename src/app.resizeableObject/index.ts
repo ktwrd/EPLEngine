@@ -318,8 +318,8 @@ export class ResizeableObject extends DemoBase implements IResizeableObject, IDe
         }
         else
         {
-            proposedBounds.y = proposedBounds.y - 0.5
-            proposedBounds.x = proposedBounds.x - 0.5
+            proposedBounds.y -= 0.5
+            proposedBounds.x -= 0.5
             proposedBounds.width -= this.strokeOptions.width / 2
             proposedBounds.height -= this.strokeOptions.width / 2
         }
